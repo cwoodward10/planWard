@@ -1,34 +1,24 @@
 <script lang="ts">
-  let count: number = 0
-  const increment = () => {
-    count += 1
-  }
+	import { ParkingCount, TotalSquareFootage } from './../modules/store/MainStore';
+
+  let parkingCount = 0;
+  ParkingCount.subscribe((value: number) => {
+    parkingCount = value;
+  })
+
+  let totalSF = 0;
+  TotalSquareFootage.subscribe((value: number) => {
+    totalSF = value;
+  })
 </script>
 
-<button on:click={increment}>
-  Clicks: {count}
-</button>
-
-<style>
-  button {
-    font-family: inherit;
-    font-size: inherit;
-    padding: 1em 2em;
-    color: #ff3e00;
-    background-color: rgba(255, 62, 0, 0.1);
-    border-radius: 2em;
-    border: 2px solid rgba(255, 62, 0, 0);
-    outline: none;
-    width: 200px;
-    font-variant-numeric: tabular-nums;
-    cursor: pointer;
-  }
-
-  button:focus {
-    border: 2px solid #ff3e00;
-  }
-
-  button:active {
-    background-color: rgba(255, 62, 0, 0.2);
-  }
-</style>
+<article class="max-w-md mx-auto flex flex-col p-3 border border-gray-700 border-solid">
+  <div class="grid grid-cols-5">
+    <h1 class="col-span-2 text-center font-bold text-gray-800">{ parkingCount }</h1>
+    <h1 class="col-span-3 font-light text-gray-800">Parking Stalls</h1>
+  </div>
+  <div class="grid grid-cols-5">
+    <h1 class="col-span-2 text-center font-bold text-gray-800">{ totalSF }</h1>
+    <h1 class="col-span-3 font-light text-gray-800">Total Square Feet</h1>
+  </div>
+</article>
