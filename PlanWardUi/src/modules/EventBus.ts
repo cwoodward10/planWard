@@ -6,11 +6,19 @@ export class EventBus {
         
     }
 
-    UpdateParkingCount(newCount: number): void {
-        ParkingCount.set(newCount);
+    UpdateParkingCount(data: string): void {
+        console.log(data);
+        let parsed = JSON.parse(data);
+        if (!Number.isNaN(parsed)) {
+            ParkingCount.set(parsed);
+        }
     }
     
-    UpdateTotalSquareFootage(newSF: number): void {
-        TotalSquareFootage.set(newSF);
+    UpdateTotalSquareFootage(data: string): void {
+        console.log(data);
+        let parsed = JSON.parse(data);
+        if (!Number.isNaN(parsed)) {
+            TotalSquareFootage.set(parsed);
+        }
     }
 }

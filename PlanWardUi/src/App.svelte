@@ -7,7 +7,12 @@
   import Counter from './lib/Counter.svelte'
 
   onMount(() => {
-    (window as unknown as PlanWardWindow).EventBus = new EventBus();
+    const pwWindow = (window as unknown as PlanWardWindow);
+    pwWindow.EventBus = new EventBus();
+    
+    if (pwWindow.Interop) {
+      pwWindow.Interop.refreshInformation();
+    }
   })
 </script>
 

@@ -58,22 +58,15 @@ namespace PlanWard
 
             Browser.IsBrowserInitializedChanged += Browser_IsBrowserInitializedChanged;
 
-            Rhino.RhinoDoc.AddRhinoObject += RhinoDoc_AddRhinoObject;
-
             return base.OnLoad(ref errorMessage);
-        }
-
-        private void RhinoDoc_AddRhinoObject(object sender, Rhino.DocObjects.RhinoObjectEventArgs e)
-        {
-            Interop.AddText(e.TheObject.ObjectType.ToString());
         }
 
         private void Browser_IsBrowserInitializedChanged(object sender, EventArgs e)
         {
+#if DEBUG
             if (Browser.IsBrowserInitialized)
                 Browser.ShowDevTools();
-
-            Interop.AddText("Hello World!");
+#endif
         }
 
         private void InitializeCefSharp()
@@ -103,7 +96,7 @@ namespace PlanWard
             Browser.BrowserSettings = new BrowserSettings
             {
                 FileAccessFromFileUrls = CefState.Enabled,
-                UniversalAccessFromFileUrls = CefState.Enabled
+                UniversalAccessFromFileUrls = CefState.Enabled,
             };
 
             Browser.Dock = System.Windows.Forms.DockStyle.Fill;

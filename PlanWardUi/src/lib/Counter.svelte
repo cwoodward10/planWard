@@ -6,9 +6,9 @@
     parkingCount = value;
   })
 
-  let totalSF = 0;
+  let totalSF = "0";
   TotalSquareFootage.subscribe((value: number) => {
-    totalSF = value;
+    totalSF = value.toFixed(2);
   })
 </script>
 

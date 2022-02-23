@@ -2,6 +2,7 @@
 using CefSharp.WinForms;
 using Rhino.Geometry;
 using System.Diagnostics;
+using Newtonsoft.Json;
 
 namespace PlanWard
 {
@@ -15,11 +16,15 @@ namespace PlanWard
         }
 
         #region To UI (Generic)
-        // from SpeckleRhino
-        public void NotifyFrame(string eventType, string eventInfo)
+        /// <summary>
+        /// Sends a JSON string as args to the given function name in the EventBus attached to the browser
+        /// </summary>
+        /// <param name="functionName"></param>
+        /// <param name="jsonString"></param>
+        public void NotifyFrame(string functionName, string jsonString)
         {
 
-            var script = string.Format("window.EventBus.$emit('{0}', '{1}')", eventType, eventInfo);
+            string script = $"window.EventBus.{functionName}('{jsonString}')";
             try
             {
                 Browser.GetMainFrame().EvaluateScriptAsync(script);
@@ -33,21 +38,29 @@ namespace PlanWard
 
         #region To UI
 
-        public void AddText(string text)
+        public void UpdateParkingCount(double count)
         {
-            NotifyFrame("add-text", text);
+           string data = JsonConvert.SerializeObject(count);
+            NotifyFrame("UpdateParkingCount", data);
+        }
+
+        public void UpdateTotalSquareFootage(double area)
+        {
+            string data = JsonConvert.SerializeObject(area);
+            NotifyFrame("UpdateTotalSquareFootage", data);
         }
 
         #endregion
 
         #region From UI
 
-        public void doSomething(dynamic args)
+        public void RefreshInformation()
         {
-            var location = new Point3d(args.location[0], args.location[1], args.location[2]);
-            var sphere = new Sphere(location, args.radius);
-            Rhino.RhinoDoc.ActiveDoc.Objects.AddSphere(sphere);
-            Rhino.RhinoDoc.ActiveDoc.Views.Redraw();
+            double count = Parking.ParkingManager.CountParkingStalls();
+            UpdateParkingCount(count);
+
+            double area = Buildings.BuildingsManager.CountSquareFootage();
+            UpdateTotalSquareFootage(area);
         }
 
         #endregion
