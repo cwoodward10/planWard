@@ -7,7 +7,7 @@ using Rhino;
 using Rhino.DocObjects;
 using Rhino.Geometry;
 
-namespace PlanWard.Buildings
+namespace PlanWard.DataAccounting.Buildings
 {
     internal class BuildingsManager
     {

@@ -103,10 +103,13 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Buildings\BuildingsManager.cs" />
-    <Compile Include="Parking\ParkingManager.cs" />
+    <Compile Include="DataAccounting\Buildings\BuildingsManager.cs" />
+    <Compile Include="Events\EventManager.cs" />
+    <Compile Include="Interop\InteropConstants.cs" />
+    <Compile Include="Interop\Models\TrackedRhinoObject.cs" />
+    <Compile Include="DataAccounting\Parking\ParkingManager.cs" />
     <Compile Include="PlanWardCommand.cs" />
-    <Compile Include="PlanWardInterop.cs" />
+    <Compile Include="Interop\PlanWardInterop.cs" />
     <Compile Include="PlanWardPanel.cs">
       <SubType>UserControl</SubType>
     </Compile>

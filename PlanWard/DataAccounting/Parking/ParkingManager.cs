@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using Rhino;
 using Rhino.DocObjects;
 
-namespace PlanWard.Parking
+namespace PlanWard.DataAccounting.Parking
 {
     internal static class ParkingManager
     {

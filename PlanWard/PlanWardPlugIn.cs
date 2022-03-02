@@ -3,6 +3,7 @@ using System.IO;
 using System.Reflection;
 using CefSharp;
 using CefSharp.WinForms;
+using PlanWard.Interop;
 using Rhino.PlugIns;
 using Rhino.UI;
 
@@ -45,18 +46,20 @@ namespace PlanWard
         {
             Panels.RegisterPanel(this, typeof(PlanWardPanel), "PlanWard", PlanWard.Properties.Resources.Icon);
 
+            // initialize CefSharp
             if (!Cef.IsInitialized)
+            {
                 InitializeCef();
-
-            // initialise one browser instance
+            }
             InitializeCefSharp();
-
             Interop = new PlanWardInterop(Browser);
 
-            // make them talk together
+            // initialize interop
             Browser.RegisterAsyncJsObject("Interop", Interop);
-
             Browser.IsBrowserInitializedChanged += Browser_IsBrowserInitializedChanged;
+
+            // initialize event managers
+            PlanWard.Events.EventManager.SetupPlanwardEventHandlers();
 
             return base.OnLoad(ref errorMessage);
         }
