@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { ParkingCount, TotalSquareFootage } from './../modules/store/MainStore';
+	import { ParkingCount, TotalSquareFootage } from '../../modules/store/MainStore';
 
   let parkingCount = 0;
   ParkingCount.subscribe((value: number) => {
