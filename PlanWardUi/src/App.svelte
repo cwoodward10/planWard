@@ -2,7 +2,7 @@
 	import MainInformationView from './lib/information-viewer/MainInformationView.svelte';
 	import type { PlanWardWindow } from './modules/PlanWardWindow';
 	import { EventBus } from './modules/EventBus';
-  import { onMount } from 'svelte';
+  import { onDestroy, onMount } from 'svelte';
 
 import TheHeader from './lib/TheHeader.svelte';
 import { ApplicationState } from './modules/store/MainStore';
@@ -18,8 +18,12 @@ import { GetComponentFromAppState } from './modules/application/ApplicationState
   })
   
   let appStateComponent = MainInformationView;
-  ApplicationState.subscribe((state) => {
+  const unsubscribeStateTracking = ApplicationState.subscribe((state) => {
     appStateComponent = GetComponentFromAppState(state);
+  })
+  
+  onDestroy(() => {
+    unsubscribeStateTracking;
   })
 </script>
 

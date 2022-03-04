@@ -1,8 +1,7 @@
 <script lang="ts">
 	import { AppStateEnum } from '../modules/application/ApplicationStateHelpers';
 	import { ApplicationState } from './../modules/store/MainStore';
-    import Icon from 'svelte-awesome';
-    import { thList, database, gear } from 'svelte-awesome/icons';
+    import { ChartBarIcon, PencilAltIcon, AdjustmentsIcon } from '@rgossiaux/svelte-heroicons/outline';
 
     function setAppState(state: AppStateEnum) {
         ApplicationState.set(state);
@@ -16,21 +15,21 @@
             class="w-6 h-6 flex border border-solid border-gray-500 rounded-md bg-white drop-shadow-sm" 
             on:click={() => setAppState(AppStateEnum.MainInformation)}
         >
-            <Icon class="flex m-auto material-icons-outlined" data={thList}/>
+            <ChartBarIcon class="flex m-auto h-4 material-icons-outlined" />
         </button>
         <button 
             class="w-6 h-6 flex border border-solid border-gray-500 rounded-md bg-white drop-shadow-sm"
             on:click={() => setAppState(AppStateEnum.MainAttributeEditor)}
 
         >
-            <Icon class="flex m-auto material-icons-outlined" data={database}/>
+            <PencilAltIcon class="flex m-auto h-4 material-icons-outlined" />
         </button>
         <button 
             class="w-6 h-6 flex border border-solid border-gray-500 rounded-md bg-white drop-shadow-sm"
             on:click={() => setAppState(AppStateEnum.MainSettings)}
 
         >
-            <Icon class="flex m-auto material-icons-outlined" data={gear}/>
+            <AdjustmentsIcon class="flex m-auto h-4 material-icons-outlined" />
         </button>
     </div>
 </header>
