@@ -114,6 +114,7 @@
     <Compile Include="Events\EventManager.cs" />
     <Compile Include="Interop\InteropConstants.cs" />
     <Compile Include="Interop\InteropUtilities.cs" />
+    <Compile Include="Interop\JSON\Converters\GuidConverter.cs" />
     <Compile Include="Interop\Models\IRhinoInteroperable.cs" />
     <Compile Include="DataAccounting\ParkingManager.cs" />
     <Compile Include="PlanWardCommand.cs" />

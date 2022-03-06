@@ -4,6 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
+using Newtonsoft.Json;
+
 using PlanWard.Interop;
 using PlanWard.Interop.Models;
 using PlanWard.DataAccounting.Models.Core;
@@ -24,6 +26,7 @@ namespace PlanWard.DataAccounting.Models
         /// Program Type for this particular building.
         /// ex: Residential, Retail, Hospitality, etc...
         /// </summary>
+        [JsonProperty(PropertyName = "ProgramType")]
         public string ProgramType { get; private set; }
 
         public Building() : base() { }

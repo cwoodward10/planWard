@@ -11,8 +11,9 @@ using Rhino;
 using Rhino.DocObjects;
 using Rhino.Geometry;
 using PlanWard.Interop.Models;
-using PlanWard.DataAccounting.Parking;
-using PlanWard.DataAccounting.Buildings;
+using PlanWard.DataAccounting;
+using PlanWard.DataAccounting.Models.Core;
+using PlanWard.DataAccounting.Utilities;
 
 namespace PlanWard.Interop
 {
@@ -82,24 +83,12 @@ namespace PlanWard.Interop
 
         public void UpdateObjectUserDictionary(string jsonData)
         {
-            JsonSerializerSettings jss = new JsonSerializerSettings()
-            {
-                //PreserveReferencesHandling = PreserveReferencesHandling.Objects,
-                TypeNameHandling = TypeNameHandling.Objects,
-                TypeNameAssemblyFormatHandling = TypeNameAssemblyFormatHandling.Simple,
-                ReferenceLoopHandling = ReferenceLoopHandling.Serialize,
-                Formatting = Formatting.Indented,
-                ConstructorHandling = ConstructorHandling.AllowNonPublicDefaultConstructor,
-                NullValueHandling = NullValueHandling.Include,
-                ObjectCreationHandling = ObjectCreationHandling.Auto,
-                DateFormatHandling = DateFormatHandling.IsoDateFormat,
-                DateTimeZoneHandling = DateTimeZoneHandling.Utc
-            };
+            IEnumerable<JObject> parsedObjects = JsonConvert.DeserializeObject<IEnumerable<JObject>>(jsonData);
+            IEnumerable<PlanWardObject> pwObjects = parsedObjects.Select(po => po.ToPlanWardObject()).Where(p => p != null);
 
-            IList<IRhinoInteroperable> trackedRhinoObjects = JsonConvert.DeserializeObject<IList<IRhinoInteroperable>>(jsonData);
-            foreach (IRhinoInteroperable tracked in trackedRhinoObjects)
+            foreach (PlanWardObject plo in pwObjects)
             {
-                tracked.TrySetTrackedInfo(Rhino.RhinoDoc.ActiveDoc);
+                plo.TrySetTrackedInfo(RhinoDoc.ActiveDoc);
             }
         }
 

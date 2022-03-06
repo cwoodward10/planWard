@@ -21,13 +21,18 @@
   const unsubscribeStateTracking = ApplicationState.subscribe((state) => {
     appStateComponent = GetComponentFromAppState(state);
   })
-  
   onDestroy(() => {
     unsubscribeStateTracking;
   })
 </script>
 
-<main class="w-screen h-screen p-3 flex flex-col space-y-2">
+<main class="mx-auto max-w-98 w-screen h-screen p-3 flex flex-col space-y-2 overflow-hidden object-contain">
   <TheHeader />
   <svelte:component this={appStateComponent}/>
 </main>
+
+<style>
+  .max-w-98 {
+    max-width: 98%;
+  }
+</style>

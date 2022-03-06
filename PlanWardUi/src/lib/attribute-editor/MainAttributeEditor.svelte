@@ -1,62 +1,28 @@
 
 <script lang="ts">
-  import type { PlanWardWindow } from '$modules/PlanWardWindow';
-  import { createForm } from "svelte-forms-lib";
-  import * as yup from 'yup';
   import { SelectedRhinoObjects } from '../../modules/store/MainStore';
+  import DesignOptionsForm from "$lib/attribute-editor/forms/DesignOptionsForm.svelte";
+  import { GetCorrectAttributeEditorForm } from '$modules/application/AttributeFormHelpers';
+  import  { onDestroy } from 'svelte';
 
-  let pwWindow = window as unknown as PlanWardWindow;
 
-  const {
-    // observables state
-    form,
-    errors,
-    state,
-    touched,
-    isValid,
-    isSubmitting,
-    isValidating,
-    // handlers
-    handleChange,
-    handleSubmit
-  } = createForm({
-    initialValues: {
-      name: "",
-      email: ""
-    },
-    validationSchema: yup.object().shape({
-      name: yup.string().required(),
-      email: yup
-        .string()
-        .email()
-        .required()
-    }),
-    onSubmit: values => {
-      return pwWindow.Interop.updateObjectUserDictionary.then(() => {
-        alert(JSON.stringify(values, null, 2));
-      });
-    }
-  });
+  let formStateComponent = DesignOptionsForm; // start w/ the most basic form by default
+  const unsubscribeSelectedRhinoObjects = SelectedRhinoObjects.subscribe((objects) => {
+    console.log("current selected", objects);
+    formStateComponent = GetCorrectAttributeEditorForm(objects);
+  })
+  onDestroy(() => {
+    unsubscribeSelectedRhinoObjects;
+  })
+
 </script>
 
-{#if $SelectedRhinoObjects && $SelectedRhinoObjects.length > 0}
-<form class:valid={$isValid} on:submit={handleSubmit}>
-  <label for="name">name</label>
-  <input name="name" on:keyup={handleChange} />
-  {#if $errors.name && $touched.name}
-    <small>{$errors.name}</small>
+<article class="w-full h-full overflow-hidden object-contain border border-solid border-gray-800">
+  {#if $SelectedRhinoObjects && $SelectedRhinoObjects.length > 0}
+  <section class="w-full h-full">
+    <svelte:component this={formStateComponent} />
+  </section>
+  {:else}
+  <section class="flex mx-auto">There are not Objects Selected in Rhino</section>
   {/if}
-
-  <label for="email">email</label>
-  <input name="email" on:keyup={handleChange} />
-  {#if $errors.email && $touched.email}
-    <small>{$errors.email}</small>
-  {/if}
-
-  <button type="submit" disabled={!$isValid}>
-    {#if $isSubmitting}loading...{:else}submit{/if}
-  </button>
-</form>
-{:else}
-<span class="flex mx-auto">There are not Objects Selected in Rhino</span>
-{/if}
+</article>

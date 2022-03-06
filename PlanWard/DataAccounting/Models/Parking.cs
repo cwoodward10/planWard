@@ -4,6 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
+using Newtonsoft.Json;
+
 using PlanWard.Interop;
 using PlanWard.Interop.Models;
 using PlanWard.DataAccounting.Models.Core;
@@ -23,16 +25,19 @@ namespace PlanWard.DataAccounting.Models
         /// <summary>
         /// True if is a Handicapped Stall
         /// </summary>
+        [JsonProperty(PropertyName = "IsHandicap")]
         public bool? IsHandicap { get; private set; }
 
         /// <summary>
         /// True if is a Compact Stall
         /// </summary>
+        [JsonProperty(PropertyName = "IsCompact")]
         public bool? IsCompact { get; private set; }
 
         /// <summary>
         /// True if is an Angled Stall
         /// </summary>
+        [JsonProperty(PropertyName = "IsAngled")]
         public bool? IsAngled { get; private set; }
 
         public Parking(): base(){}

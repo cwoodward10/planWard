@@ -1,4 +1,4 @@
-import type { TrackedRhinoObject } from "./data-models/TrackedRhinoObject";
+import type { IPlanWardObject } from "./data-models/IPlanWardObject";
 import { ParkingCount, SelectedRhinoObjects } from "./store/MainStore";
 import { TotalSquareFootage } from "./store/MainStore";
 
@@ -9,7 +9,7 @@ export class EventBus {
 
     SetSelectedObjects(data: string): void {
         console.log(data);
-        let parsed: TrackedRhinoObject[] = JSON.parse(data);
+        let parsed: IPlanWardObject[] = JSON.parse(data);
         if (parsed) {
             SelectedRhinoObjects.set(parsed);
         }
