@@ -1,9 +1,18 @@
-import { ParkingCount } from "./store/MainStore";
+import type { TrackedRhinoObject } from "./data-models/TrackedRhinoObject";
+import { ParkingCount, SelectedRhinoObjects } from "./store/MainStore";
 import { TotalSquareFootage } from "./store/MainStore";
 
 export class EventBus {
     constructor() {
         
+    }
+
+    SetSelectedObjects(data: string): void {
+        console.log(data);
+        let parsed: TrackedRhinoObject[] = JSON.parse(data);
+        if (parsed) {
+            SelectedRhinoObjects.set(parsed);
+        }
     }
 
     UpdateParkingCount(data: string): void {

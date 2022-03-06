@@ -4,9 +4,9 @@
 	import { EventBus } from './modules/EventBus';
   import { onDestroy, onMount } from 'svelte';
 
-import TheHeader from './lib/TheHeader.svelte';
-import { ApplicationState } from './modules/store/MainStore';
-import { GetComponentFromAppState } from './modules/application/ApplicationStateHelpers';
+  import TheHeader from './lib/TheHeader.svelte';
+  import { ApplicationState } from './modules/store/MainStore';
+  import { GetComponentFromAppState } from './modules/application/ApplicationStateHelpers';
 
   onMount(() => {
     const pwWindow = (window as unknown as PlanWardWindow);
