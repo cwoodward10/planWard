@@ -50,7 +50,7 @@ namespace PlanWard.Interop
 
         public void SendSelectedObjects(IEnumerable<RhinoObject> objects)
         {
-            IEnumerable<TrackedRhinoObject> trackedObjects = objects.Select(obj => TrackedRhinoObject.FromRhinoObject(obj));
+            IEnumerable<IRhinoInteroperable> trackedObjects = InteropUtilities.ConvertRhinoObjectsToInteropable(objects);
             string data = JsonConvert.SerializeObject(trackedObjects);
             NotifyFrame("SetSelectedObjects", data);
         }
@@ -96,8 +96,8 @@ namespace PlanWard.Interop
                 DateTimeZoneHandling = DateTimeZoneHandling.Utc
             };
 
-            IList<TrackedRhinoObject> trackedRhinoObjects = JsonConvert.DeserializeObject<IList<TrackedRhinoObject>>(jsonData);
-            foreach (TrackedRhinoObject tracked in trackedRhinoObjects)
+            IList<IRhinoInteroperable> trackedRhinoObjects = JsonConvert.DeserializeObject<IList<IRhinoInteroperable>>(jsonData);
+            foreach (IRhinoInteroperable tracked in trackedRhinoObjects)
             {
                 tracked.TrySetTrackedInfo(Rhino.RhinoDoc.ActiveDoc);
             }

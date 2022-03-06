@@ -10,7 +10,7 @@ namespace PlanWard.DataAccounting.Parking
 {
     internal static class ParkingManager
     {
-        const string defaultParkingPrefix = "Parking Stall -";
+        public const string defaultParkingPrefix = "Parking Stall -";
 
         public static double CountParkingStalls()
         {
