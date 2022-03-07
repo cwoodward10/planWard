@@ -16,7 +16,7 @@ namespace PlanWard.Events
         {
             RhinoDoc.SelectObjects += OnRhinoObjectsSelected;
             RhinoDoc.DeselectObjects += OnRhinoObjectsSelected;
-            RhinoDoc.DeselectAllObjects += OnRhinoObjectsDeselected;
+            RhinoDoc.DeselectAllObjects += OnRhinoObjectsAllDeselected;
 
             RhinoDoc.AddRhinoObject += OnRhinoObjectAdded;
             RhinoDoc.DeleteRhinoObject += OnRhinoObjectDeleted;
@@ -37,14 +37,21 @@ namespace PlanWard.Events
 
         private static void OnRhinoObjectsSelected(Object sender, RhinoObjectSelectionEventArgs e)
         {
-            PlanWardPlugIn.Interop.SendSelectedObjects(e.RhinoObjects);
+            PlanWardPlugIn.Interop.SendSelectedObjects(CheckSelection(e));
         }
 
-        private static void OnRhinoObjectsDeselected(object sender, RhinoDeselectAllObjectsEventArgs e)
+        private static void OnRhinoObjectsAllDeselected(object sender, RhinoDeselectAllObjectsEventArgs e)
         {
             PlanWardPlugIn.Interop.SendSelectedObjects(new List<RhinoObject>());
         }
 
         #endregion event handlers
+
+        #region helper methods
+        private static IEnumerable<RhinoObject> CheckSelection(RhinoObjectSelectionEventArgs e)
+        {
+            return RhinoDoc.ActiveDoc.Objects.Where(obj => obj.IsSelected(false) != 0);
+        }
+        #endregion
     }
 }
