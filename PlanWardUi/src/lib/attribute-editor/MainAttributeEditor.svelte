@@ -17,7 +17,7 @@
 
 </script>
 
-<article class="w-full h-full overflow-hidden object-contain border border-solid border-gray-800">
+<article class="w-full h-full overflow-hidden object-contain">
   {#if $SelectedRhinoObjects && $SelectedRhinoObjects.length > 0}
   <section class="w-full h-full">
     <svelte:component this={formStateComponent} />

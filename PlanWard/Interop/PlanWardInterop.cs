@@ -51,8 +51,8 @@ namespace PlanWard.Interop
 
         public void SendSelectedObjects(IEnumerable<RhinoObject> objects)
         {
-            IEnumerable<IRhinoInteroperable> trackedObjects = InteropUtilities.ConvertRhinoObjectsToInteropable(objects);
-            string data = JsonConvert.SerializeObject(trackedObjects);
+            IEnumerable<IRhinoInteroperable> interopObjects = InteropUtilities.ConvertRhinoObjectsToInteropable(objects);
+            string data = JsonConvert.SerializeObject(interopObjects);
             NotifyFrame("SetSelectedObjects", data);
         }
 
