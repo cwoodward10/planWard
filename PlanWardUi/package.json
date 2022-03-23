@@ -13,6 +13,7 @@
     "@rgossiaux/svelte-heroicons": "^0.1.2",
     "@sveltejs/vite-plugin-svelte": "^1.0.0-next.30",
     "@tsconfig/svelte": "^2.0.1",
+    "@types/chartjs": "^0.0.31",
     "autoprefixer": "^10.4.2",
     "postcss": "^8.4.6",
     "svelte": "^3.44.0",
@@ -24,6 +25,7 @@
     "vite": "^2.8.0"
   },
   "dependencies": {
+    "chart.js": "^3.7.1",
     "svelte-forms-lib": "^2.0.1",
     "yup": "^0.32.11"
   }
