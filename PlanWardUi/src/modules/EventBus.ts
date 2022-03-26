@@ -1,6 +1,5 @@
 import type { IPlanWardObject } from "./data-models/IPlanWardObject";
-import { ParkingCount, SelectedRhinoObjects } from "./store/MainStore";
-import { TotalSquareFootage } from "./store/MainStore";
+import { AllPlanWardObjects, SelectedRhinoObjects } from "./store/MainStore";
 
 export class EventBus {
     constructor() {
@@ -8,26 +7,16 @@ export class EventBus {
     }
 
     SetSelectedObjects(data: string): void {
-        console.log(data);
         let parsed: IPlanWardObject[] = JSON.parse(data);
         if (parsed) {
             SelectedRhinoObjects.set(parsed);
         }
     }
 
-    UpdateParkingCount(data: string): void {
-        console.log(data);
+    UpdatePlanWardDataAccounting(data: string): void {
         let parsed = JSON.parse(data);
-        if (!Number.isNaN(parsed)) {
-            ParkingCount.set(parsed);
-        }
-    }
-    
-    UpdateTotalSquareFootage(data: string): void {
-        console.log(data);
-        let parsed = JSON.parse(data);
-        if (!Number.isNaN(parsed)) {
-            TotalSquareFootage.set(parsed);
+        if (parsed) {
+            AllPlanWardObjects.set(parsed);
         }
     }
 }

@@ -14,6 +14,8 @@ namespace PlanWard.Events
     {
         public static void SetupPlanwardEventHandlers()
         {
+            RhinoDoc.ActiveDocumentChanged += OnActiveDocChanged;
+            
             RhinoDoc.SelectObjects += OnRhinoObjectsSelected;
             RhinoDoc.DeselectObjects += OnRhinoObjectsSelected;
             RhinoDoc.DeselectAllObjects += OnRhinoObjectsAllDeselected;
@@ -21,9 +23,27 @@ namespace PlanWard.Events
             RhinoDoc.AddRhinoObject += OnRhinoObjectAdded;
             RhinoDoc.DeleteRhinoObject += OnRhinoObjectDeleted;
             RhinoDoc.UndeleteRhinoObject += OnRhinoObjectAdded;
-        }   
+        }
+
+        public static void UnsubscribeEventHandlers()
+        {
+            RhinoDoc.ActiveDocumentChanged -= OnActiveDocChanged;
+
+            RhinoDoc.SelectObjects -= OnRhinoObjectsSelected;
+            RhinoDoc.DeselectObjects -= OnRhinoObjectsSelected;
+            RhinoDoc.DeselectAllObjects -= OnRhinoObjectsAllDeselected;
+
+            RhinoDoc.AddRhinoObject -= OnRhinoObjectAdded;
+            RhinoDoc.DeleteRhinoObject -= OnRhinoObjectDeleted;
+            RhinoDoc.UndeleteRhinoObject -= OnRhinoObjectAdded;
+        }
         
         #region event handlers
+
+        private static void OnActiveDocChanged(Object sender, DocumentEventArgs e)
+        {
+            PlanWardPlugIn.Interop.RefreshInformation();
+        }
 
         private static void OnRhinoObjectAdded(Object sender, RhinoObjectEventArgs e)
         {

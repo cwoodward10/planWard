@@ -14,6 +14,7 @@ using Rhino.DocObjects;
 using Rhino;
 using Rhino.Collections;
 using PlanWard.DataAccounting.Utilities;
+using Rhino.Geometry;
 
 namespace PlanWard.DataAccounting.Models
 {
@@ -29,11 +30,23 @@ namespace PlanWard.DataAccounting.Models
         [JsonProperty(PropertyName = "ProgramType")]
         public string ProgramType { get; private set; }
 
+        /// <summary>
+        /// Area within the bounds of the curve that define this building
+        /// </summary>
+        [JsonProperty(PropertyName = "Area")]
+        public double Area { get; private set; }
+
         public Building() : base() { }
 
         public Building(RhinoObject rhinoObject) : base(rhinoObject)
         {
             PlanWardType = PlanWardTypes.Building;
+
+            // code should check that RhinoObject is CurveObject
+            // and is closed before even passing the object into the constructor
+            // if this turns out not to be case in future, may want to program more defensively here
+            CurveObject curveObject = (CurveObject)rhinoObject;
+            Area = AreaMassProperties.Compute(curveObject.CurveGeometry).Area;
         }
 
         public override void PullPropertiesFromRhinoObject(RhinoObject rhObj)

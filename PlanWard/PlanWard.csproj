@@ -104,19 +104,18 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DataAccounting\Models\Building.cs" />
-    <Compile Include="DataAccounting\BuildingsManager.cs" />
     <Compile Include="DataAccounting\Models\DesignOptionContainer.cs" />
     <Compile Include="DataAccounting\PlanWardTypes.cs" />
     <Compile Include="DataAccounting\Models\Core\IAccountingObject.cs" />
     <Compile Include="DataAccounting\Models\Parking.cs" />
     <Compile Include="DataAccounting\Models\Core\PlanWardObject.cs" />
+    <Compile Include="DataAccounting\Utilities\DataAccountingExtensions.cs" />
     <Compile Include="DataAccounting\Utilities\ModelUtilities.cs" />
     <Compile Include="Events\EventManager.cs" />
     <Compile Include="Interop\InteropConstants.cs" />
     <Compile Include="Interop\InteropUtilities.cs" />
     <Compile Include="Interop\JSON\Converters\GuidConverter.cs" />
     <Compile Include="Interop\Models\IRhinoInteroperable.cs" />
-    <Compile Include="DataAccounting\ParkingManager.cs" />
     <Compile Include="PlanWardCommand.cs" />
     <Compile Include="Interop\PlanWardInterop.cs" />
     <Compile Include="PlanWardPanel.cs">

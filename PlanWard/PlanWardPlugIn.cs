@@ -64,6 +64,13 @@ namespace PlanWard
             return base.OnLoad(ref errorMessage);
         }
 
+        protected override void OnShutdown()
+        {
+            Events.EventManager.UnsubscribeEventHandlers();
+            
+            base.OnShutdown();
+        }
+
         private void Browser_IsBrowserInitializedChanged(object sender, EventArgs e)
         {
 #if DEBUG

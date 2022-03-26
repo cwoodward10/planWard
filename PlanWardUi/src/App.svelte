@@ -26,7 +26,7 @@
   })
 </script>
 
-<main class="mx-auto max-w-98 w-screen h-screen p-3 flex flex-col space-y-2 overflow-hidden object-contain">
+<main class="mx-auto max-w-98 w-screen h-screen p-5 flex flex-col space-y-2 overflow-hidden object-contain">
   <TheHeader />
   <svelte:component this={appStateComponent}/>
 </main>

@@ -4,8 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Collections;
+
 using PlanWard.Interop.Models;
 using PlanWard.DataAccounting.Models;
+using PlanWard.DataAccounting.Utilities;
+
 using Rhino;
 using Rhino.DocObjects;
 using Rhino.DocObjects.Tables;
@@ -14,7 +17,12 @@ namespace PlanWard.Interop
 {
     internal static class InteropUtilities
     {
-        public static IEnumerable<IRhinoInteroperable> ConvertRhinoObjectsToInteropable(IEnumerable<RhinoObject> rhinoObjects)
+        /// <summary>
+        /// Converts a given list of RhinoObjects to RhinoInteroperable Objects
+        /// </summary>
+        /// <param name="rhinoObjects"></param>
+        /// <returns></returns>
+        internal static IEnumerable<IRhinoInteroperable> ConvertRhinoObjectsToInteropable(IEnumerable<RhinoObject> rhinoObjects)
         {
             IEnumerable<IRhinoInteroperable> interopObjects = new List<IRhinoInteroperable>();
 
@@ -29,11 +37,7 @@ namespace PlanWard.Interop
                 Layer docLayer = layerTable.FirstOrDefault(l => l.Name == InteropConstants.LAYER_DESIGN_OPTION_CONTAINER);
                 if (docLayer != null)
                 {
-                    IEnumerable<CurveObject> crvsOnDocLayer = rhinoObjects.Where(ro => ro.Attributes.LayerIndex == docLayer.Index).Where(obj => obj.ObjectType == ObjectType.Curve).Cast<CurveObject>();
-                    IEnumerable<DesignOptionContainer> docObjects = crvsOnDocLayer.Where(crv => crv.CurveGeometry.IsClosed).Select(crv =>
-                    {
-                        return new DesignOptionContainer(crv);
-                    });
+                    IEnumerable<DesignOptionContainer> docObjects = rhinoObjects.ToDesignOptionContainers(docLayer);
                     interopObjects = interopObjects.Concat(docObjects);
                 }
 
@@ -41,11 +45,7 @@ namespace PlanWard.Interop
                 Layer bldgLayer = layerTable.FirstOrDefault(l => l.Name == InteropConstants.LAYER_BUILDING_OUTLINES);
                 if (bldgLayer != null)
                 {
-                    IEnumerable<CurveObject> crvsOnDocLayer = rhinoObjects.Where(ro => ro.Attributes.LayerIndex == bldgLayer.Index).Where(obj => obj.ObjectType == ObjectType.Curve).Cast<CurveObject>();
-                    IEnumerable<Building> buildingObjects = crvsOnDocLayer.Where(crv => crv.CurveGeometry.IsClosed).Select(crv =>
-                    {
-                        return new Building(crv);
-                    });
+                    IEnumerable<Building> buildingObjects = rhinoObjects.ToBuildingObjects(bldgLayer);
                     interopObjects = interopObjects.Concat(buildingObjects);
                 }
 
@@ -53,17 +53,26 @@ namespace PlanWard.Interop
                 Layer parkLayer = layerTable.FirstOrDefault(l => l.Name == InteropConstants.LAYER_PARKING);
                 if (parkLayer != null)
                 {
-                    IEnumerable<InstanceObject> blocksOnLayer = rhinoObjects.Where(ro => ro.Attributes.LayerIndex == parkLayer.Index).Where(obj => obj.ObjectType == ObjectType.InstanceReference).Cast<InstanceObject>();
-                    IEnumerable<Parking> parkingObjects = blocksOnLayer.Where(b => b.InstanceDefinition.Name.Contains("Parking Stall -")).Select(b =>
-                    {
-                        return new Parking(b);
-                    });
+                    IEnumerable<Parking> parkingObjects = rhinoObjects.ToParkingObjects(parkLayer);
                     interopObjects = interopObjects.Concat(parkingObjects);
                 }
 
             }
 
             return interopObjects;
+        }
+        
+        /// <summary>
+        /// Returns all PlanWard Objects in the Rhino doc that are eligible to be tracked by the UI.
+        /// Converts the RhinoObjects in the Doc to these objects. 
+        /// Eligible objects to be tracked are objects that are on valid layers, of valid types, and have assigned Design Options.
+        /// </summary>
+        /// <param name="doc"></param>
+        /// <returns></returns>
+        internal static IEnumerable<IRhinoInteroperable> GetActivePlanWardObjects(RhinoDoc doc)
+        {
+            IEnumerable<RhinoObject> eligibleObjects = doc.Objects.WithDefinedDesignOption();
+            return ConvertRhinoObjectsToInteropable(eligibleObjects);
         }
     }
 }

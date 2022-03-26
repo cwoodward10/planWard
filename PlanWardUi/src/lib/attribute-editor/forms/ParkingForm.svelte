@@ -22,14 +22,7 @@ import {
 import type {
     IAccountingObject
 } from '$modules/data-models/IAccountingObject';
-
-type parkingObject =
-    IAccountingObject &
-    IPlanWardObject & {
-        IsCompact: boolean | null,
-        IsAngled: boolean | null,
-        IsHandicap: boolean | null,
-    };
+import type { IParking } from '$modules/data-models/IParking';
 
 const formInputValueHelper = new FormInputValueHelper();
 
@@ -41,9 +34,9 @@ const unsubscribeRhinoSelection = SelectedRhinoObjects.subscribe((objects) => {
             designOption: formInputValueHelper.placeholderDesignOption,
             regionName: formInputValueHelper.placeholderRegionName,
             regionIdentifier: formInputValueHelper.placeholderRegionIdentifier,
-            isCompact: formInputValueHelper.placeholderParkingCompact,
-            isAngled: formInputValueHelper.placeholderParkingAngled,
-            isHandicap: formInputValueHelper.placeholderParkingHandicap,
+            isCompact: null,
+            isAngled: null,
+            isHandicap: null,
         })
     }
 })
@@ -83,7 +76,7 @@ const {
         isHandicap: yup.boolean().nullable(),
     }),
     onSubmit: values => {
-        const updatedObjects = $SelectedRhinoObjects.map((obj: parkingObject) => {
+        const updatedObjects = $SelectedRhinoObjects.map((obj: IParking) => {
             obj.DesignOption = values.designOption;
             obj.RegionName = values.regionName;
             obj.RegionIdentifier = values.regionIdentifier;

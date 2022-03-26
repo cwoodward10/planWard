@@ -8,7 +8,6 @@
 
   let formStateComponent = DesignOptionsForm; // start w/ the most basic form by default
   const unsubscribeSelectedRhinoObjects = SelectedRhinoObjects.subscribe((objects) => {
-    console.log("current selected", objects);
     formStateComponent = GetCorrectAttributeEditorForm(objects);
   })
   onDestroy(() => {
@@ -17,12 +16,12 @@
 
 </script>
 
-<article class="w-full h-full overflow-hidden object-contain">
+<article class="w-full h-full overflow-hidden">
   {#if $SelectedRhinoObjects && $SelectedRhinoObjects.length > 0}
-  <section class="w-full h-full">
+  <section class="w-full h-full p-3">
     <svelte:component this={formStateComponent} />
   </section>
   {:else}
-  <section class="flex mx-auto">There are not Objects Selected in Rhino</section>
+  <section class="flex mx-auto p-3">There are not Objects Selected in Rhino</section>
   {/if}
 </article>

@@ -11,7 +11,7 @@ using Newtonsoft.Json.Linq;
 
 namespace PlanWard.Interop.Models
 {
-    internal interface IRhinoInteroperable
+    public interface IRhinoInteroperable
     {
         #region properties
 

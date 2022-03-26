@@ -22,12 +22,7 @@ import {
 import type {
     IAccountingObject
 } from '$modules/data-models/IAccountingObject';
-
-type buildingObject =
-    IAccountingObject &
-    IPlanWardObject & {
-        ProgramType: string
-    };
+import type { IBuilding } from '$modules/data-models/IBuilding';
 
 const formInputValueHelper = new FormInputValueHelper();
 
@@ -75,7 +70,7 @@ const {
         programType: yup.string().not([FORM_MULTIPLE_VALUES_STRING]).required(),
     }),
     onSubmit: values => {
-        const updatedObjects = $SelectedRhinoObjects.map((obj: buildingObject) => {
+        const updatedObjects = $SelectedRhinoObjects.map((obj: IBuilding) => {
             obj.DesignOption = values.designOption;
             obj.RegionName = values.regionName;
             obj.RegionIdentifier = values.regionIdentifier;
@@ -143,6 +138,17 @@ const {
         {#if $errors.programType && $touched.programType}
         <small class="flex form-input-error">{$errors.programType}</small>
         {/if}
+    </div>
+
+    <div class="flex flex-col space-y-1">
+        <label class="flex form-label" for="area">Area</label>
+        <input
+            class="flex w-full form-input-text-disabled"
+            name="programType"
+            value={formInputValueHelper.actualBuildingArea}
+            placeholder={formInputValueHelper.placeholderBuildingArea}
+            disabled={true}
+            />
     </div>
 
     <button class="flex btn-standard" type="submit" disabled={!$isValid}>

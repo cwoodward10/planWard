@@ -1,15 +1,9 @@
 <script lang="ts">
-	import { ParkingCount, TotalSquareFootage } from '../../modules/store/MainStore';
+	import type { IBuilding } from './../../modules/data-models/IBuilding';
+	import { PlanWardBuildings, PlanWardParking } from '../../modules/store/MainStore';
 
-  let parkingCount = 0;
-  ParkingCount.subscribe((value: number) => {
-    parkingCount = value;
-  })
-
-  let totalSF = "0";
-  TotalSquareFootage.subscribe((value: number) => {
-    totalSF = value.toFixed(2);
-  })
+  $: parkingCount = $PlanWardParking.length;
+  $: totalSF = $PlanWardBuildings.filter(b => b.Area != null && b.Area > 0).reduce((total: number, nextBld: IBuilding) => total + nextBld.Area, 0).toFixed(0);
 </script>
 
 <article class="max-w-md mx-auto flex flex-col p-3 border border-gray-700 border-solid">

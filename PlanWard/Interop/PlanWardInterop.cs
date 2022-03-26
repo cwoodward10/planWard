@@ -3,13 +3,17 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+
 using CefSharp;
 using CefSharp.WinForms;
+
 using Rhino;
 using Rhino.DocObjects;
 using Rhino.Geometry;
+
 using PlanWard.Interop.Models;
 using PlanWard.DataAccounting;
 using PlanWard.DataAccounting.Models.Core;
@@ -56,16 +60,10 @@ namespace PlanWard.Interop
             NotifyFrame("SetSelectedObjects", data);
         }
 
-        public void UpdateParkingCount(double count)
+        public void UpdatePlanWardDataAccounting(IEnumerable<IRhinoInteroperable> objects)
         {
-           string data = JsonConvert.SerializeObject(count);
-            NotifyFrame("UpdateParkingCount", data);
-        }
-
-        public void UpdateTotalSquareFootage(double area)
-        {
-            string data = JsonConvert.SerializeObject(area);
-            NotifyFrame("UpdateTotalSquareFootage", data);
+           string data = JsonConvert.SerializeObject(objects);
+            NotifyFrame("UpdatePlanWardDataAccounting", data);
         }
 
         #endregion
@@ -74,11 +72,8 @@ namespace PlanWard.Interop
 
         public void RefreshInformation()
         {
-            double count = ParkingManager.CountParkingStalls();
-            UpdateParkingCount(count);
-
-            double area = BuildingsManager.CountSquareFootage();
-            UpdateTotalSquareFootage(area);
+            IEnumerable<IRhinoInteroperable> planwardObjects = InteropUtilities.GetActivePlanWardObjects(RhinoDoc.ActiveDoc);
+            UpdatePlanWardDataAccounting(planwardObjects);
         }
 
         public void UpdateObjectUserDictionary(string jsonData)
@@ -90,6 +85,8 @@ namespace PlanWard.Interop
             {
                 plo.TrySetTrackedInfo(RhinoDoc.ActiveDoc);
             }
+
+            RefreshInformation();
         }
 
         #endregion

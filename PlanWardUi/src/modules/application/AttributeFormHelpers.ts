@@ -62,17 +62,17 @@ export class FormInputValueHelper {
     placeholderBuildingProgram: string = DEFAULT_PLACEHOLDER_VALUE;
     actualBuildingProgram: string | null = null;
 
+    placeholderBuildingArea: string = "";
+    actualBuildingArea: string | null = null;
+
     //#endregion building properties
 
     //#endregion parking properties
 
-    placeholderParkingCompact: boolean | null = null;
     actualParkingCompact: boolean | null = null;
 
-    placeholderParkingAngled: boolean | null = null;
     actualParkingAngled: boolean | null = null;
 
-    placeholderParkingHandicap: boolean | null = null;
     actualParkingHandicap: boolean | null = null;
 
     //#endregion parking properties
@@ -121,6 +121,14 @@ export class FormInputValueHelper {
                 this.actualBuildingProgram = firstObject.ProgramType;
             } else {
                 this.placeholderBuildingProgram = FORM_MULTIPLE_VALUES_STRING;
+            }
+        }
+
+        if (firstObject.Area != undefined) {
+            if (objects.every((o: any) => o.Area == firstObject.Area)) {
+                this.actualBuildingArea = (firstObject.Area as number).toFixed(0);
+            } else {
+                this.placeholderBuildingArea = FORM_MULTIPLE_VALUES_STRING;
             }
         }
         //#endregion building properties
