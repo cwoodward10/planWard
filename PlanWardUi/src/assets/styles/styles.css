@@ -16,7 +16,11 @@
 @layer components {
   /* --------------- Button Component Styles --------------- */
   .btn-standard {
-    @apply p-2 border border-solid border-gray-700 rounded 
+    @apply p-2 border border-solid border-gray-700 bg-white rounded text-center drop-shadow-md
+  }
+
+  .btn-standard:disabled {
+    @apply border-gray-400 text-gray-400
   }
   /* --------------- Input Component Styles --------------- */
   .form-label {

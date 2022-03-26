@@ -22,7 +22,9 @@ import {
 import type {
     IAccountingObject
 } from '$modules/data-models/IAccountingObject';
-import type { IBuilding } from '$modules/data-models/IBuilding';
+import type {
+    IBuilding
+} from '$modules/data-models/IBuilding';
 
 const formInputValueHelper = new FormInputValueHelper();
 
@@ -65,9 +67,9 @@ const {
     },
     validationSchema: yup.object().shape({
         designOption: yup.string().not([FORM_MULTIPLE_VALUES_STRING]).required(),
-        regionName: yup.string().not([FORM_MULTIPLE_VALUES_STRING]).required(),
-        regionIdentifier: yup.string().not([FORM_MULTIPLE_VALUES_STRING]).required(),
-        programType: yup.string().not([FORM_MULTIPLE_VALUES_STRING]).required(),
+        regionName: yup.string().not([FORM_MULTIPLE_VALUES_STRING]).nullable(),
+        regionIdentifier: yup.string().not([FORM_MULTIPLE_VALUES_STRING]).nullable(),
+        programType: yup.string().not([FORM_MULTIPLE_VALUES_STRING]).nullable(),
     }),
     onSubmit: values => {
         const updatedObjects = $SelectedRhinoObjects.map((obj: IBuilding) => {
@@ -151,7 +153,16 @@ const {
             />
     </div>
 
-    <button class="flex btn-standard" type="submit" disabled={!$isValid}>
-        {#if $isSubmitting}Set Rhino Attributes...{:else}submit{/if}
-    </button>
+    <div class="flex flex-col w-full justify-center">
+        <button
+            class="flex mx-auto btn-standard"
+            type="submit"
+            disabled={!$isValid}
+            >
+            Submit
+        </button>
+        {#if $isSubmitting}      
+        <p class="flex mx-auto text-gray-500 text-center font-thin">Setting Rhino Attributes</p>
+        {/if}
+    </div>
 </form>

@@ -22,7 +22,9 @@ import {
 import type {
     IAccountingObject
 } from '$modules/data-models/IAccountingObject';
-import type { IParking } from '$modules/data-models/IParking';
+import type {
+    IParking
+} from '$modules/data-models/IParking';
 
 const formInputValueHelper = new FormInputValueHelper();
 
@@ -69,8 +71,8 @@ const {
     },
     validationSchema: yup.object().shape({
         designOption: yup.string().not([FORM_MULTIPLE_VALUES_STRING]).required(),
-        regionName: yup.string().not([FORM_MULTIPLE_VALUES_STRING]).required(),
-        regionIdentifier: yup.string().not([FORM_MULTIPLE_VALUES_STRING]).required(),
+        regionName: yup.string().not([FORM_MULTIPLE_VALUES_STRING]).nullable(),
+        regionIdentifier: yup.string().not([FORM_MULTIPLE_VALUES_STRING]).nullable(),
         isCompact: yup.boolean().nullable(),
         isAngled: yup.boolean().nullable(),
         isHandicap: yup.boolean().nullable(),
@@ -86,9 +88,11 @@ const {
             return obj;
         });
         const data = JSON.stringify(updatedObjects);
+        alert("sending!");
         return pwWindow.Interop.updateObjectUserDictionary(data);
     }
 });
+
 </script>
 
 <form class="flex flex-col space-y-3 w-full h-full" class:valid={$isValid} on:submit={handleSubmit}>
@@ -167,7 +171,16 @@ const {
         <label class="flex my-auto form-label whitespace-nowrap" for="isCompact">Is Compact</label>
     </div>
 
-    <button class="flex btn-standard" type="submit" disabled={!$isValid}>
-        {#if $isSubmitting}Set Rhino Attributes...{:else}submit{/if}
-    </button>
+    <div class="flex flex-col w-full justify-center">
+        <button
+            class="flex mx-auto btn-standard"
+            type="submit"
+            disabled={!$isValid}
+            >
+            Submit
+        </button>
+        {#if $isSubmitting}      
+        <p class="flex mx-auto text-gray-500 text-center font-thin">Setting Rhino Attributes</p>
+        {/if}
+    </div>
 </form>
