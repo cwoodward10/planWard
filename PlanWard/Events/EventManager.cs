@@ -47,12 +47,17 @@ namespace PlanWard.Events
 
         private static void OnRhinoObjectAdded(Object sender, RhinoObjectEventArgs e)
         {
+            //todo figure out how to be more targeted about this
             PlanWardPlugIn.Interop.RefreshInformation();
         }
 
         private static void OnRhinoObjectDeleted(Object sender, RhinoObjectEventArgs e)
         {
-            PlanWardPlugIn.Interop.RefreshInformation();
+            //todo figure out how to be more targeted about this
+            if (e.TheObject.UserDictionary.ContainsKey(InteropConstants.DICT_DESIGN_OPTION_NAME))
+            {
+                PlanWardPlugIn.Interop.RefreshInformation();
+            }
         }
 
         private static void OnRhinoObjectsSelected(Object sender, RhinoObjectSelectionEventArgs e)
