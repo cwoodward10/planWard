@@ -88,8 +88,7 @@ const {
             return obj;
         });
         const data = JSON.stringify(updatedObjects);
-        alert("sending!");
-        return pwWindow.Interop.updateObjectUserDictionary(data);
+        pwWindow.Interop.updateObjectUserDictionary(data);
     }
 });
 

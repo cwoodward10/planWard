@@ -1,9 +1,21 @@
 import type { IPlanWardObject } from "./data-models/IPlanWardObject";
-import { AllPlanWardObjects, SelectedRhinoObjects } from "./store/MainStore";
+import { AllPlanWardObjects, ApplicationAlert, SelectedRhinoObjects } from "./store/MainStore";
 
 export class EventBus {
     constructor() {
         
+    }
+
+    SendApplicationMessage(
+        message: string, 
+        type: "Success" | "Warning" | "Error",
+        timeout: number,
+        ): void {
+        ApplicationAlert.set({
+            message: message,
+            type: type,
+            timeout: timeout,
+        })
     }
 
     SetSelectedObjects(data: string): void {
@@ -18,5 +30,6 @@ export class EventBus {
         if (parsed) {
             AllPlanWardObjects.set(parsed);
         }
+        this.SendApplicationMessage("UI Up-to-Date", "Success", 500);
     }
 }

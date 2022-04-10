@@ -49,6 +49,31 @@ namespace PlanWard.Interop
                 Debug.WriteLine("For some reason, this browser was not initialised.");
             }
         }
+
+        /// <summary>
+        /// Sends a Message to the Frontend
+        /// </summary>
+        /// <param name="message"></param>
+        /// <param name="type">Should be "Success", "Warning", or "Error". Will send "Warning" if none of those.</param>
+        /// <param name="timeout"></param>
+        public void SendMessageToFrontend(string message, string type, double timeout)
+        {
+            string protectedType = type;
+            if (type != "Success" || type != "Warning" || type != "Error")
+            {
+                protectedType = "Warning";
+            }
+
+            string script = $"window.EventBus.SendApplicationMessage('{message}', '{type}', {timeout})";
+            try
+            {
+                Browser.GetMainFrame().EvaluateScriptAsync(script);
+            }
+            catch
+            {
+                Debug.WriteLine("For some reason, this browser was not initialised.");
+            }
+        }
         #endregion
 
         #region To UI
@@ -81,12 +106,27 @@ namespace PlanWard.Interop
             IEnumerable<JObject> parsedObjects = JsonConvert.DeserializeObject<IEnumerable<JObject>>(jsonData);
             IEnumerable<PlanWardObject> pwObjects = parsedObjects.Select(po => po.ToPlanWardObject()).Where(p => p != null);
 
+            int failureCount = 0;
             foreach (PlanWardObject plo in pwObjects)
             {
-                plo.TrySetTrackedInfo(RhinoDoc.ActiveDoc);
+                bool success = plo.TrySetTrackedInfo(RhinoDoc.ActiveDoc);
+                if (!success)
+                {
+                    failureCount++;
+                }
             }
 
             RefreshInformation();
+            if (failureCount == 0)
+            {
+                SendMessageToFrontend("Objects Updated!", "Success", 500);
+            } else if (failureCount < pwObjects.Count())
+            {
+                SendMessageToFrontend($"Failed to Update {failureCount} Objects", "Warning", 1000);
+            } else
+            {
+                SendMessageToFrontend($"Error Update Objects", "Error", 1000);
+            }
         }
 
         #endregion

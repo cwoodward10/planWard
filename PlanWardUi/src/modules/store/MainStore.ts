@@ -5,10 +5,34 @@ import { derived, writable } from "svelte/store";
 import { AppStateEnum } from "../application/ApplicationStateHelpers";
 import type { IPlanWardObject } from "../data-models/IPlanWardObject";
 
+//#region UI state constants
+
+/**
+ * Controls the Alert Message Displayed at the top of the UI
+ */
+export const ApplicationAlert = writable({
+    message: "",
+    type: "Success" as "Success" | "Warning" | "Error",
+    timeout: 0,
+});
+export const ApplicationAlertMessage = derived(ApplicationAlert, $ApplicationAlert => {
+    return $ApplicationAlert.message;
+})
+export const ApplicationAlertType = derived(ApplicationAlert, $ApplicationAlert => {
+    return $ApplicationAlert.type;
+})
+export const ApplicationAlertTimeout = derived(ApplicationAlert, $ApplicationAlert => {
+    return $ApplicationAlert.timeout;
+})
+
 /**
  * Controls the state of the App and thus what is show in the UI
  */
 export const ApplicationState = writable(AppStateEnum.MainInformation);
+
+//#endregion UI state constants
+
+//#region Rhino state constants
 
 /**
  * Array of Objects that are selected in Rhino. Empty Array if nothing is selected.
@@ -34,3 +58,5 @@ export const PlanWardBuildings = derived(AllPlanWardObjects, $AllPlanWardObjects
 export const PlanWardParking = derived(AllPlanWardObjects, $AllPlanWardObjects => {
     return $AllPlanWardObjects.filter(obj => obj.PlanWardType === PlanWardTypes.ParkingSpace) as IParking[]; 
 })
+
+//#endregion Rhino state constants

@@ -75,7 +75,7 @@ const {
             return obj;
         });
         const data = JSON.stringify(updatedObjects);
-        return pwWindow.Interop.updateObjectUserDictionary(data);
+        pwWindow.Interop.updateObjectUserDictionary(data);
     }
 });
 </script>
