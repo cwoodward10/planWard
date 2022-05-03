@@ -26,10 +26,14 @@ export class EventBus {
     }
 
     UpdatePlanWardDataAccounting(data: string): void {
-        let parsed = JSON.parse(data);
-        if (parsed) {
-            AllPlanWardObjects.set(parsed);
+        try {
+            let parsed = JSON.parse(data);
+            if (parsed) {
+                AllPlanWardObjects.set(parsed);
+                this.SendApplicationMessage("UI Up-to-Date", "Success", 500);
+            }
+        } catch {
+            this.SendApplicationMessage("Could not Update UI", "Error", 800);
         }
-        this.SendApplicationMessage("UI Up-to-Date", "Success", 500);
     }
 }

@@ -28,6 +28,7 @@ namespace PlanWard.DataAccounting.Models
                 DesignOption = designOption;
             }
         }
+
         public override bool TrySetTrackedInfo(RhinoDoc doc)
         {
             RhinoObject rhObj = doc.Objects.FindId(RhinoId);

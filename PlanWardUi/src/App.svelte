@@ -7,7 +7,7 @@
   import TheHeader from './lib/TheHeader.svelte';
   import { ApplicationState } from './modules/store/MainStore';
   import { GetComponentFromAppState } from './modules/application/ApplicationStateHelpers';
-import TheAlert from '$lib/TheAlert.svelte';
+  import TheAlert from '$lib/TheAlert.svelte';
 
   onMount(() => {
     const pwWindow = (window as unknown as PlanWardWindow);

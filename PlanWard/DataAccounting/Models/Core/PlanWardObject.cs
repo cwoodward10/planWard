@@ -21,7 +21,7 @@ namespace PlanWard.DataAccounting.Models.Core
         /// Name of the Design Option that this Object belongs to
         /// </summary>
         [JsonProperty(PropertyName = "DesignOption")]
-        public string DesignOption { get; protected set; }
+        public string DesignOption { get; set; }
 
         /// <summary>
         /// Type of Object that this corresponds to. Is based on which layer it exists on

@@ -18,6 +18,7 @@ using PlanWard.Interop.Models;
 using PlanWard.DataAccounting;
 using PlanWard.DataAccounting.Models.Core;
 using PlanWard.DataAccounting.Utilities;
+using PlanWard.DataAccounting.Models;
 
 namespace PlanWard.Interop
 {
@@ -39,7 +40,7 @@ namespace PlanWard.Interop
         public void NotifyFrame(string functionName, string jsonString)
         {
 
-            string script = $"window.EventBus.{functionName}('{jsonString}')";
+            string script = $"if (window.EventBus) {{ window.EventBus.{functionName}('{jsonString}'); }}";
             try
             {
                 Browser.GetMainFrame().EvaluateScriptAsync(script);
@@ -78,6 +79,10 @@ namespace PlanWard.Interop
 
         #region To UI
 
+        /// <summary>
+        /// Calls the UI Event Bus method for setting the selected Planward Objects
+        /// </summary>
+        /// <param name="objects"></param>
         public void SendSelectedObjects(IEnumerable<RhinoObject> objects)
         {
             IEnumerable<IRhinoInteroperable> interopObjects = InteropUtilities.ConvertRhinoObjectsToInteropable(objects);
@@ -85,6 +90,10 @@ namespace PlanWard.Interop
             NotifyFrame("SetSelectedObjects", data);
         }
 
+        /// <summary>
+        /// Calls the UI Event Bus method for setting Planward Object information
+        /// </summary>
+        /// <param name="objects"></param>
         public void UpdatePlanWardDataAccounting(IEnumerable<IRhinoInteroperable> objects)
         {
            string data = JsonConvert.SerializeObject(objects);
@@ -95,37 +104,63 @@ namespace PlanWard.Interop
 
         #region From UI
 
+        /// <summary>
+        /// Gathers all active Planward Objects and sends them to the UI.
+        /// </summary>
         public void RefreshInformation()
         {
             IEnumerable<IRhinoInteroperable> planwardObjects = InteropUtilities.GetActivePlanWardObjects(RhinoDoc.ActiveDoc);
             UpdatePlanWardDataAccounting(planwardObjects);
         }
 
+        /// <summary>
+        /// Gets updated information from the UI. Tries to apply that information to the Rhino Objects. 
+        /// Then refreshes the information in the UI and sends a message of succss or failure.
+        /// </summary>
+        /// <param name="jsonData"></param>
         public void UpdateObjectUserDictionary(string jsonData)
         {
             IEnumerable<JObject> parsedObjects = JsonConvert.DeserializeObject<IEnumerable<JObject>>(jsonData);
             IEnumerable<PlanWardObject> pwObjects = parsedObjects.Select(po => po.ToPlanWardObject()).Where(p => p != null);
 
+            bool triggerAutoUpdate = false;
             int failureCount = 0;
-            foreach (PlanWardObject plo in pwObjects)
+            foreach (PlanWardObject pwo in pwObjects)
             {
-                bool success = plo.TrySetTrackedInfo(RhinoDoc.ActiveDoc);
+                bool success = pwo.TrySetTrackedInfo(RhinoDoc.ActiveDoc);
                 if (!success)
                 {
                     failureCount++;
                 }
+                // if planward type if design option container, assume the name changed and we need to update
+                // todo add another && here to check settings if should auto update
+                else if (success && pwo.PlanWardType == PlanWardTypes.DesignOptionContainer)
+                {
+                    triggerAutoUpdate = true;
+                }
             }
 
-            RefreshInformation();
+            if (triggerAutoUpdate)
+            {
+                InteropUtilities.SyncWithDesignOptionNameChange(RhinoDoc.ActiveDoc, pwObjects.Where(obj => obj.PlanWardType == PlanWardTypes.DesignOptionContainer).Cast<DesignOptionContainer>());
+            }
+
+            // unless all failed, refresh information
+            if (failureCount != pwObjects.Count())
+            {
+                RefreshInformation();
+            }
+
+            // send messages regarding success or failure
             if (failureCount == 0)
             {
                 SendMessageToFrontend("Objects Updated!", "Success", 500);
             } else if (failureCount < pwObjects.Count())
             {
-                SendMessageToFrontend($"Failed to Update {failureCount} Objects", "Warning", 1000);
+                SendMessageToFrontend($"Warning: {failureCount} Objects Failed to Update", "Warning", 1000);
             } else
             {
-                SendMessageToFrontend($"Error Update Objects", "Error", 1000);
+                SendMessageToFrontend($"Error Updating Objects", "Error", 1000);
             }
         }
 
