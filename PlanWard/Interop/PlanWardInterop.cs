@@ -154,13 +154,13 @@ namespace PlanWard.Interop
             // send messages regarding success or failure
             if (failureCount == 0)
             {
-                SendMessageToFrontend("Objects Updated!", "Success", 500);
+                SendMessageToFrontend("Objects Updated!", "Success", 2000);
             } else if (failureCount < pwObjects.Count())
             {
-                SendMessageToFrontend($"Warning: {failureCount} Objects Failed to Update", "Warning", 1000);
+                SendMessageToFrontend($"Warning: {failureCount} Objects Failed to Update", "Warning", 3000);
             } else
             {
-                SendMessageToFrontend($"Error Updating Objects", "Error", 1000);
+                SendMessageToFrontend($"Error Updating Objects", "Error", 3000);
             }
         }
 

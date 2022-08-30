@@ -2,15 +2,22 @@
 @tailwind components;
 @tailwind utilities;
 
+@layer base {
+  html {
+    font-family: Proxima Nova, system-ui, sans-serif;
+  }
+}
+
 :root {
-  --primary-light: #a6f9d6;
-  --primary: #5be2a9;
-  --primary-dark: #53ce9a;
-  --secondary: #1e2145;
+  --pw-green: #C2E7C9;
+  --pw-yellow: #F2AC20;
+  --pw-blue: #4265D6;
+  --pw-navy: #293855;
+  --pw-red: #ff6b6b;
   --white: #fff;
-  --grey: #e6e6ff;
-  --grey-dark: #6d7098;
-  --red: #ff6b6b;
+  --gray: #e6e6ff;
+  --gray-light: #F3F3FF;
+  --gray-dark: #6d7098;
 }
 
 @layer components {
@@ -28,14 +35,14 @@
   }
   .form-input-text {
     @apply p-1 border border-solid border-gray-800 bg-gray-100 rounded;
-    @apply focus:ring-2 focus:ring-offset-fuchsia-500 focus:ring-offset-1;
+    @apply focus:ring-2 focus:ring-offset-pw-blue focus:ring-offset-1;
   }
   .form-input-text-disabled {
     @apply p-1 border border-solid border-gray-500 bg-gray-300 rounded;
-    @apply focus:ring-2 focus:ring-offset-fuchsia-500 focus:ring-offset-1;
+    @apply focus:ring-2 focus:ring-offset-pw-blue focus:ring-offset-1;
   }
   .form-input-checkbox {
-    @apply focus:ring-2 focus:ring-fuchsia-500 focus:ring-offset-1;
+    @apply focus:ring-2 focus:ring-pw-blue focus:ring-offset-1;
   }
   .form-input-error {
     @apply font-light text-xs text-red-600

@@ -1,18 +1,20 @@
 <script lang="ts">
 import {
-    ApplicationAlertMessage,
-    ApplicationAlertType,
-    ApplicationAlertTimeout
-} from "$modules/store/MainStore";
-import {
     CheckCircleIcon,
     ExclamationIcon,
     ExclamationCircleIcon,
     XCircleIcon
 } from "@rgossiaux/svelte-heroicons/solid";
+
 import {
     onDestroy
 } from "svelte";
+
+import {
+    ApplicationAlertMessage,
+    ApplicationAlertType,
+    ApplicationAlertTimeout
+} from "$modules/store/MainStore";
 
 let showAlert = false;
 const unSubMessage = ApplicationAlertMessage.subscribe(message => {

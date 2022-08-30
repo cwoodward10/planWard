@@ -83,7 +83,7 @@ namespace PlanWard
         {
 #if DEBUG
             //use localhost
-            Browser = new ChromiumWebBrowser(@"http://localhost:3000/");
+            Browser = new ChromiumWebBrowser(@"http://localhost:5173/");
 #else
             //use app files
 

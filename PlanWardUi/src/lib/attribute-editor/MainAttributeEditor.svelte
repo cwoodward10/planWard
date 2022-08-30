@@ -1,9 +1,12 @@
 
 <script lang="ts">
-  import { SelectedRhinoObjects } from '../../modules/store/MainStore';
   import DesignOptionsForm from "$lib/attribute-editor/forms/DesignOptionsForm.svelte";
-  import { GetCorrectAttributeEditorForm } from '$modules/application/AttributeFormHelpers';
+
   import  { onDestroy } from 'svelte';
+  
+  import { SelectedRhinoObjects } from '../../modules/store/MainStore';
+
+  import { GetCorrectAttributeEditorForm } from '$modules/application/AttributeFormHelpers';
 
 
   let formStateComponent = DesignOptionsForm; // start w/ the most basic form by default
@@ -16,12 +19,12 @@
 
 </script>
 
-<article class="w-full h-full overflow-hidden">
+<article class="w-full h-full overflow-hidden flex">
   {#if $SelectedRhinoObjects && $SelectedRhinoObjects.length > 0}
   <section class="w-full h-full p-3">
     <svelte:component this={formStateComponent} />
   </section>
   {:else}
-  <section class="flex mx-auto p-3">There are not Objects Selected in Rhino</section>
+  <section class="flex mx-auto p-3">No Objects Selected in Rhino</section>
   {/if}
 </article>

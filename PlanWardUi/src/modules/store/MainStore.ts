@@ -2,7 +2,7 @@ import { PlanWardTypes } from "$modules/application/PlanWardTypesEnum";
 import type { IBuilding } from "$modules/data-models/IBuilding";
 import type { IParking } from "$modules/data-models/IParking";
 import { derived, writable } from "svelte/store";
-import { AppStateEnum } from "../application/ApplicationStateHelpers";
+import type { AppStateEnum } from "../application/ApplicationStateHelpers";
 import type { IPlanWardObject } from "../data-models/IPlanWardObject";
 
 //#region UI state constants
@@ -28,7 +28,7 @@ export const ApplicationAlertTimeout = derived(ApplicationAlert, $ApplicationAle
 /**
  * Controls the state of the App and thus what is show in the UI
  */
-export const ApplicationState = writable(AppStateEnum.MainInformation);
+export const ApplicationState = writable<AppStateEnum>();
 
 //#endregion UI state constants
 
@@ -57,6 +57,15 @@ export const PlanWardBuildings = derived(AllPlanWardObjects, $AllPlanWardObjects
  */
 export const PlanWardParking = derived(AllPlanWardObjects, $AllPlanWardObjects => {
     return $AllPlanWardObjects.filter(obj => obj.PlanWardType === PlanWardTypes.ParkingSpace) as IParking[]; 
+})
+
+export const AllDesignOptions = derived(AllPlanWardObjects, $AllPlanWardObjects => {
+    return $AllPlanWardObjects.map(obj => obj.DesignOption).reduce((distinctOptions: string[], dOpt: string) => {
+        if (!distinctOptions.includes(dOpt)) {
+            distinctOptions.push(dOpt);
+        }
+        return distinctOptions;
+    }, [])
 })
 
 //#endregion Rhino state constants

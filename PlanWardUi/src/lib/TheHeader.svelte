@@ -1,35 +1,55 @@
 <script lang="ts">
-	import { AppStateEnum } from '../modules/application/ApplicationStateHelpers';
-	import { ApplicationState } from './../modules/store/MainStore';
-    import { ChartBarIcon, PencilAltIcon, AdjustmentsIcon } from '@rgossiaux/svelte-heroicons/outline';
+import { CogIcon, XIcon } from '@rgossiaux/svelte-heroicons/outline';
 
-    function setAppState(state: AppStateEnum) {
-        ApplicationState.set(state);
-    }
+import { AppStateEnum } from '../modules/application/ApplicationStateHelpers';
+import { ApplicationState } from './../modules/store/MainStore';
+
+function setAppState(state: AppStateEnum) {
+    ApplicationState.set(state);
+}
+
+let showSettingsMenu = false;
 </script>
 
-<header class="mx-auto flex flex-col justify-center">
-    <h1 class="text-center text-xl font-medium text-gray-800">PlanWard</h1>
-    <div class="flex space-x-1 mx-auto">
-        <button 
-            class="w-6 h-6 flex border border-solid border-gray-500 rounded-md bg-white drop-shadow-sm" 
+<header class="mx-auto w-full grid grid-cols-12 align-middle">
+    <h1 class="col-span-3 text-xl font-medium text-gray-800">PlanWard</h1>
+    <div class="col-span-6 relative mx-auto grid grid-cols-2 rounded-full bg-white">
+        <button
+            class="px-6 py-1 text-center text-sm z-50"
+            class:text-white="{$ApplicationState === AppStateEnum.MainInformation}"
             on:click={() => setAppState(AppStateEnum.MainInformation)}
-        >
-            <ChartBarIcon class="flex m-auto h-4 material-icons-outlined" />
+            >
+            Home
         </button>
-        <button 
-            class="w-6 h-6 flex border border-solid border-gray-500 rounded-md bg-white drop-shadow-sm"
+        <button
+            class="px-8 py-1 text-center text-sm z-50"
+            class:text-white="{$ApplicationState === AppStateEnum.MainAttributeEditor}"
             on:click={() => setAppState(AppStateEnum.MainAttributeEditor)}
 
-        >
-            <PencilAltIcon class="flex m-auto h-4 material-icons-outlined" />
+            >
+            Editor
         </button>
-        <button 
-            class="w-6 h-6 flex border border-solid border-gray-500 rounded-md bg-white drop-shadow-sm"
-            on:click={() => setAppState(AppStateEnum.MainSettings)}
-
-        >
-            <AdjustmentsIcon class="flex m-auto h-4 material-icons-outlined" />
+        <div 
+            class="absolute h-full w-1/2 bg-pw-navy rounded-full move-transition"
+            class:translate-x-0={$ApplicationState === AppStateEnum.MainInformation}
+            class:translate-x-full={$ApplicationState === AppStateEnum.MainAttributeEditor}
+        />
+    </div>
+    <div class="col-span-3 flex justify-self-end">
+        <button
+            class="h-full flex bg-white"
+            >
+            {#if !showSettingsMenu }
+            <CogIcon class="flex m-auto h-5 text-gray-600 material-icons-outlined" on:click={() => showSettingsMenu = true} />
+            {:else}
+            <XIcon class="flex m-auto h-5 text-pw-red material-icons-outlined" on:click={() => showSettingsMenu = false} />
+            {/if}
         </button>
     </div>
 </header>
+
+<style>
+    .move-transition {
+        transition: transform 200ms;
+    }
+</style>

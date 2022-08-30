@@ -9,7 +9,6 @@ import MainSettingsView from "../../lib/settings/MainSettingsView.svelte";
 export enum AppStateEnum {
     MainInformation,
     MainAttributeEditor,
-    MainSettings,
 }
 
 /**
@@ -23,7 +22,5 @@ export function GetComponentFromAppState(appState: AppStateEnum) {
             return MainInformationViewer;
         case AppStateEnum.MainAttributeEditor:
             return MainAttributeEditor;
-        case AppStateEnum.MainSettings:
-            return MainSettingsView;
     }
 }

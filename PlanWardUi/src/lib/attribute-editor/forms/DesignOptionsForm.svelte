@@ -1,14 +1,17 @@
 <script lang="ts">
-import type {
-    IPlanWardObject
-} from './../../../modules/data-models/IPlanWardObject';
+import {
+    onMount
+} from 'svelte';
+
 import type {
     PlanWardWindow
 } from '$modules/PlanWardWindow';
+
+import * as yup from 'yup';
 import {
     createForm
 } from "svelte-forms-lib";
-import * as yup from 'yup';
+
 import {
     SelectedRhinoObjects
 } from '$modules/store/MainStore';
@@ -16,9 +19,7 @@ import {
     FormInputValueHelper,
     FORM_MULTIPLE_VALUES_STRING
 } from '$modules/application/AttributeFormHelpers';
-import {
-    onMount
-} from 'svelte';
+
 
 const formInputValueHelper = new FormInputValueHelper();
 
