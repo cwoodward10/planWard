@@ -128,7 +128,7 @@ namespace PlanWard.DataAccounting.Utilities
         internal static IEnumerable<Parking> ToParkingObjects(this IEnumerable<RhinoObject> rhinoObjects, Layer parkingLayer)
         {
             IEnumerable<InstanceObject> blocksOnLayer = rhinoObjects.Where(ro => ro.Attributes.LayerIndex == parkingLayer.Index).Where(obj => obj.ObjectType == ObjectType.InstanceReference).Cast<InstanceObject>();
-            IEnumerable<Parking> parkingObjects = blocksOnLayer.Where(b => b.InstanceDefinition.Name.Contains("Parking Stall -")).Select(b =>
+            IEnumerable<Parking> parkingObjects = blocksOnLayer.Where(b => b.InstanceDefinition.Name.Contains(InteropConstants.PREFIX_PARKING_BLOCK_IDENTIFIER)).Select(b =>
             {
                 return new Parking(b);
             });

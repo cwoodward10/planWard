@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -19,5 +20,8 @@ namespace PlanWard.Interop
         public const string LAYER_DESIGN_OPTION_CONTAINER = "Design Option Container";
         public const string LAYER_BUILDING_OUTLINES = "Building Outlines";
         public const string LAYER_PARKING = "Parking";
+        public const string LAYER_GREEN_SPACE = "Green Space";
+
+        public const string PREFIX_PARKING_BLOCK_IDENTIFIER = "Parking Stall -";
     }
 }
