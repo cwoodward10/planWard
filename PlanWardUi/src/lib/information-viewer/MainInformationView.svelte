@@ -8,6 +8,8 @@
 	import { AllDesignOptions } from './../../modules/store/MainStore';
 
 	import type { IBuilding } from './../../modules/data-models/IBuilding';
+  import type { IPlanWardObject } from '$modules/data-models/IPlanWardObject';
+  import type { ComponentType } from 'svelte';
 
   const DESIGNOPTION_ALL_FILTER = 'All';
   let currentDesignOptionFilter = { id:0, value: DESIGNOPTION_ALL_FILTER};
@@ -29,38 +31,60 @@
     return currentDesignOptionFilter.id === 0 || currentDesignOptionFilter.value === p.DesignOption;
   })
 
-  $: parkingCount = filteredParking.length;
-  $: totalSF = Math.round(filteredBuildings.filter(b => b.Area != null && b.Area > 0).reduce((total: number, nextBld: IBuilding) => total + nextBld.Area, 0));
-
+  type  dataStructure = {
+    name: string,
+    data: IPlanWardObject[],
+    dataProperty: string | null,
+    units: string,
+    color: string,
+    textColor: string,
+    icon: ComponentType,
+  }
+  let dataControllers: dataStructure[]
+  $: dataControllers = [
+    {
+      name: "Building Footprints",
+      data: filteredBuildings,
+      dataProperty: "Area",
+      units: "Square Feet",
+      color: "var(--pw-blue)",
+      textColor: "black",
+      icon: BuildingIcon,
+    },
+    {
+      name: "Parking Stalls",
+      data: filteredParking,
+      dataProperty: null,
+      units: "Total Stalls",
+      color: "var(--pw-yellow)",
+      textColor: "black",
+      icon: ParkingIcon
+    }
+  ]
 </script>
 
-<article class="w-full mx-auto flex flex-col space-y-6">
+<article class="h-full w-full mx-auto flex flex-col space-y-6">
+  <!-- Design Option Dropdown -->
   <section class="w-full relative">
     <ListBox 
       options={designOptionFilters} 
       selected={currentDesignOptionFilter} 
       on:selectionChanged="{handleFilterChanged}" />
   </section>
-
-  <OverallInformationCard 
-    title={'Building Footprints'} 
-    value={totalSF} 
-    units={'Square Feet'} 
-    color={'var(--pw-blue)'} 
-    textColor={'black'}>
-    <div slot="icon" class="w-full h-full flex mx-auto justify-center">
-      <BuildingIcon strokeColor={'var(--pw-blue)'} fillColor={'var(--pw-blue)'} />
-    </div>
-  </OverallInformationCard>
-
-  <OverallInformationCard 
-    title={'Parking Stalls'} 
-    value={parkingCount} 
-    units={'Total Stalls'} 
-    color={'var(--pw-yellow)'}
-    textColor={'black'} >
-    <div slot="icon" class="w-full h-full flex mx-auto justify-center">
-      <ParkingIcon strokeColor={'var(--pw-yellow)'} fillColor={'var(--pw-yellow)'} />
-    </div>
-  </OverallInformationCard>
+  <!-- Information Card Section -->
+  <section class="relative w-full h-full flex flex-col space-y-6">
+    {#each dataControllers as dataController}
+    <OverallInformationCard 
+      title={dataController.name} 
+      data={dataController.data} 
+      dataProperty={dataController.dataProperty}
+      units={dataController.units} 
+      color={dataController.color} 
+      textColor={dataController.textColor}>
+      <div slot="icon" class="w-full h-full flex mx-auto justify-center">
+        <svelte:component this={dataController.icon} strokeColor={dataController.color} fillColor={dataController.color} />
+      </div>
+    </OverallInformationCard>
+    {/each}
+  </section>
 </article>

@@ -4,7 +4,7 @@
 
   import  { onDestroy } from 'svelte';
   
-  import { SelectedRhinoObjects } from '../../modules/store/MainStore';
+  import { SelectedRhinoObjects } from '$modules/store/MainStore';
 
   import { GetCorrectAttributeEditorForm } from '$modules/application/AttributeFormHelpers';
 

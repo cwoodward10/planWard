@@ -3,7 +3,8 @@
     import { EmojiHappyIcon } from '@rgossiaux/svelte-heroicons/outline';
 
     export let title: string;
-    export let value: number;
+    export let data: any[];
+    export let dataProperty: string | null = null;
     export let units: string;
     export let color: string = 'white';
     export let textColor: string = 'black';
@@ -13,7 +14,23 @@
         --card-text-color:${textColor}
     `;
 
-    $: formattedValue = NumberWithCommas(value);
+    function setValue(inputData: any[]) {
+        if (!inputData) {
+            return 0;
+        }
+
+        const useDataProperty = dataProperty !== null && 
+            data.every(d => Object.hasOwn(d, dataProperty)) && 
+            data.every(d => d[dataProperty])
+
+        if (!inputData) {
+            return 0;
+        } else {
+            return useDataProperty ? inputData.reduce((total: number, next) => total + next[dataProperty], 0) : data.length;
+        }
+    }
+    $: value = setValue(data);
+    $: formattedValue = NumberWithCommas(Math.round(value));
 </script>
 
 <article class="w-full px-6 py-3 grid grid-cols-12 gap-3 align-middle rounded-lg shadow card-color" 
