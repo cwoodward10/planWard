@@ -37,30 +37,28 @@ function handleClose() {
 }
 </script>
 
-<template>
-    {#if showAlert === true}
-    <div
-        class="h-15 flex justify-between p-2 drop-shadow-lg z-50 rounded-md overflow-hidden"
-        class:success={$ApplicationAlertType === "Success"}
-        class:warning={$ApplicationAlertType === "Warning"}
-        class:error={$ApplicationAlertType === "Error"}
-        >
-        <span class="flex">
-            {#if $ApplicationAlertType === "Success"}
-            <CheckCircleIcon class="text-white h-5 w-5" />
-            {:else if  $ApplicationAlertType === "Warning"}
-            <ExclamationIcon class="text-white h-5 w-5" />
-            {:else}
-            <ExclamationCircleIcon class="text-white h-5 w-5" />
-            {/if}
-        </span>
-        <p class="flex flex-grow-0 text-center font-medium mx-auto truncate text-white">{ $ApplicationAlertMessage }</p>
-        <span class="flex col-start-7 cursor-pointer" on:click="{handleClose}">
-            <XCircleIcon class="ml-auto mr-0 text-white h-5 w-5" />
-        </span>
-    </div>
-    {/if}
-</template>
+{#if showAlert === true}
+<div
+    class="h-15 flex justify-between p-2 drop-shadow-lg z-50 rounded-md overflow-hidden"
+    class:success={$ApplicationAlertType === "Success"}
+    class:warning={$ApplicationAlertType === "Warning"}
+    class:error={$ApplicationAlertType === "Error"}
+    >
+    <span class="flex">
+        {#if $ApplicationAlertType === "Success"}
+        <CheckCircleIcon class="text-white h-5 w-5" />
+        {:else if  $ApplicationAlertType === "Warning"}
+        <ExclamationIcon class="text-white h-5 w-5" />
+        {:else}
+        <ExclamationCircleIcon class="text-white h-5 w-5" />
+        {/if}
+    </span>
+    <p class="flex flex-grow-0 text-center font-medium mx-auto truncate text-white">{ $ApplicationAlertMessage }</p>
+    <span class="flex col-start-7 cursor-pointer" on:click="{handleClose}">
+        <XCircleIcon class="ml-auto mr-0 text-white h-5 w-5" />
+    </span>
+</div>
+{/if}
 
 <style>
 .success {

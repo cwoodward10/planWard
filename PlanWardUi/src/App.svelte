@@ -1,16 +1,17 @@
 <script lang="ts">
-  import TheHeader from './lib/TheHeader.svelte';
-	import MainInformationView from './lib/information-viewer/MainInformationView.svelte';
+  import TheHeader from '$lib/TheHeader.svelte';
+	import MainInformationView from '$lib/information-viewer/MainInformationView.svelte';
   import TheAlert from '$lib/TheAlert.svelte';
 
   import { onDestroy, onMount } from 'svelte';
 
-  import { ApplicationState } from './modules/store/MainStore';
-  import { AppStateEnum, GetComponentFromAppState } from './modules/application/ApplicationStateHelpers';
+  import { AllPlanWardObjects, ApplicationState } from '$modules/store/MainStore';
+  import { AppStateEnum, GetComponentFromAppState } from '$modules/application/ApplicationStateHelpers';
 
-	import type { PlanWardWindow } from './modules/PlanWardWindow';
+	import type { PlanWardWindow } from '$modules/PlanWardWindow';
   
-	import { EventBus } from './modules/EventBus';
+	import { EventBus } from '$modules/EventBus';
+  import { DevConstants } from '$modules/dev-constants/DevConstants';
 
 
   onMount(() => {
@@ -21,6 +22,8 @@
     
     if (pwWindow.Interop) {
       pwWindow.Interop.refreshInformation();
+    } else {
+      AllPlanWardObjects.set(DevConstants);
     }
   })
   

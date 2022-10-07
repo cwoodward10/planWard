@@ -1,4 +1,4 @@
-import App from './App.svelte'
+import App from './App.svelte';
 
 import '$assets/styles/reset.css';
 import '$assets/styles/styles.css';

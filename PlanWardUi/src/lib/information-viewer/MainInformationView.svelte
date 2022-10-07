@@ -9,12 +9,9 @@
 
 	import type { IBuilding } from './../../modules/data-models/IBuilding';
 
-  $: parkingCount = $PlanWardParking.length;
-  $: totalSF = Math.round($PlanWardBuildings.filter(b => b.Area != null && b.Area > 0).reduce((total: number, nextBld: IBuilding) => total + nextBld.Area, 0));
-
   const DESIGNOPTION_ALL_FILTER = 'All';
   let currentDesignOptionFilter = { id:0, value: DESIGNOPTION_ALL_FILTER};
-  $: designOptionFilters = [DESIGNOPTION_ALL_FILTER, "Testing", "Testing Another"]
+  $: designOptionFilters = [DESIGNOPTION_ALL_FILTER]
     .concat($AllDesignOptions)
     .map((optionName: string, index: number) => { return {id: index, value: optionName}} );
 
@@ -25,6 +22,16 @@
     }
   }
 
+  $: filteredBuildings = $PlanWardBuildings.filter(b => {
+    return currentDesignOptionFilter.id === 0 || currentDesignOptionFilter.value === b.DesignOption;
+  })
+  $: filteredParking = $PlanWardParking.filter(p => {
+    return currentDesignOptionFilter.id === 0 || currentDesignOptionFilter.value === p.DesignOption;
+  })
+
+  $: parkingCount = filteredParking.length;
+  $: totalSF = Math.round(filteredBuildings.filter(b => b.Area != null && b.Area > 0).reduce((total: number, nextBld: IBuilding) => total + nextBld.Area, 0));
+
 </script>
 
 <article class="w-full mx-auto flex flex-col space-y-6">
@@ -34,6 +41,7 @@
       selected={currentDesignOptionFilter} 
       on:selectionChanged="{handleFilterChanged}" />
   </section>
+
   <OverallInformationCard 
     title={'Building Footprints'} 
     value={totalSF} 
@@ -44,6 +52,7 @@
       <BuildingIcon strokeColor={'var(--pw-blue)'} fillColor={'var(--pw-blue)'} />
     </div>
   </OverallInformationCard>
+
   <OverallInformationCard 
     title={'Parking Stalls'} 
     value={parkingCount} 

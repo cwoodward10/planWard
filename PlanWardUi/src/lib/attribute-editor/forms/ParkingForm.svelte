@@ -1,6 +1,6 @@
 <script lang="ts">
 import {
-    onMount
+  onDestroy
 } from 'svelte';
 
 import type {
@@ -38,7 +38,7 @@ const unsubscribeRhinoSelection = SelectedRhinoObjects.subscribe((objects) => {
         })
     }
 })
-onMount(() => {
+onDestroy(() => {
     unsubscribeRhinoSelection;
 })
 
@@ -137,7 +137,7 @@ const {
         <input
             class="flex my-auto form-input-checkbox"
             name="isHandicap"
-            value={formInputValueHelper.actualParkingHandicap}
+            checked={formInputValueHelper.actualParkingHandicap}
             type="checkbox"
             on:click={handleChange}
             />
@@ -148,7 +148,7 @@ const {
         <input
             class="flex my-auto form-input-checkbox"
             name="isAngled"
-            value={formInputValueHelper.actualParkingAngled}
+            checked={formInputValueHelper.actualParkingAngled}
             type="checkbox"
             on:click={handleChange}
             />
@@ -159,7 +159,7 @@ const {
         <input
             class="flex my-auto form-input-checkbox"
             name="isCompact"
-            value={formInputValueHelper.actualParkingCompact}
+            checked={formInputValueHelper.actualParkingCompact}
             type="checkbox"
             on:click={handleChange}
             />

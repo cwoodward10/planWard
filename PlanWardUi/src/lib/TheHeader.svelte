@@ -15,14 +15,14 @@ let showSettingsMenu = false;
     <h1 class="col-span-3 text-xl font-medium text-gray-800">PlanWard</h1>
     <div class="col-span-6 relative mx-auto grid grid-cols-2 rounded-full bg-white">
         <button
-            class="px-6 py-1 text-center text-sm z-50"
+            class="px-6 py-1 text-center text-sm z-20"
             class:text-white="{$ApplicationState === AppStateEnum.MainInformation}"
             on:click={() => setAppState(AppStateEnum.MainInformation)}
             >
             Home
         </button>
         <button
-            class="px-8 py-1 text-center text-sm z-50"
+            class="px-8 py-1 text-center text-sm z-20"
             class:text-white="{$ApplicationState === AppStateEnum.MainAttributeEditor}"
             on:click={() => setAppState(AppStateEnum.MainAttributeEditor)}
 

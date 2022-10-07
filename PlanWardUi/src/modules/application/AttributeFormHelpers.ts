@@ -85,10 +85,11 @@ export class FormInputValueHelper {
         }
 
         let firstObject: any = objects[0];
+        console.log(objects);
 
         //#region design option
         // set design option
-        if (objects.every(o => o.DesignOption == firstObject.DesignOption)) {
+        if (objects.every(o => o.DesignOption === firstObject.DesignOption)) {
             this.actualDesignOption = firstObject.DesignOption;
         } else {
             this.placeholderDesignOption = FORM_MULTIPLE_VALUES_STRING;
@@ -98,7 +99,8 @@ export class FormInputValueHelper {
         //#region region properties
         // set region name if exists
         if (firstObject.RegionName != undefined) {
-            if (objects.every((o : any) => o.RegionName == firstObject.RegionName)) {
+            if (objects.every((o : any) => o.RegionName === firstObject.RegionName)) {
+                console.log('hit all region name same');
                 this.actualRegionName = firstObject.RegionName;
             } else {
                 this.placeholderRegionName = FORM_MULTIPLE_VALUES_STRING;
@@ -107,7 +109,7 @@ export class FormInputValueHelper {
 
         // set region identifier if exists
         if (firstObject.RegionIdentifier != undefined) {
-            if (objects.every((o : any) => o.RegionIdentifier == firstObject.RegionIdentifier)) {
+            if (objects.every((o : any) => o.RegionIdentifier === firstObject.RegionIdentifier)) {
                 this.actualRegionIdentifier = firstObject.RegionIdentifier;
             } else {
                 this.placeholderRegionIdentifier = FORM_MULTIPLE_VALUES_STRING;
@@ -117,7 +119,7 @@ export class FormInputValueHelper {
 
         //#region building properties
         if (firstObject.ProgramType != undefined) {
-            if (objects.every((o : any) => o.ProgramType == firstObject.ProgramType)) {
+            if (objects.every((o : any) => o.ProgramType === firstObject.ProgramType)) {
                 this.actualBuildingProgram = firstObject.ProgramType;
             } else {
                 this.placeholderBuildingProgram = FORM_MULTIPLE_VALUES_STRING;
@@ -125,7 +127,7 @@ export class FormInputValueHelper {
         }
 
         if (firstObject.Area != undefined) {
-            if (objects.every((o: any) => o.Area == firstObject.Area)) {
+            if (objects.every((o: any) => o.Area === firstObject.Area)) {
                 this.actualBuildingArea = (firstObject.Area as number).toFixed(0);
             } else {
                 this.placeholderBuildingArea = FORM_MULTIPLE_VALUES_STRING;
@@ -135,19 +137,19 @@ export class FormInputValueHelper {
 
         //#region  parking properties
         if (firstObject.IsCompact != undefined) {
-            if (objects.every((o : any) => o.IsCompact == firstObject.IsCompact)) {
+            if (objects.every((o : any) => o.IsCompact === firstObject.IsCompact)) {
                 this.actualParkingCompact = firstObject.IsCompact;
             }
         }
 
         if (firstObject.IsAngled != undefined) {
-            if (objects.every((o : any) => o.IsAngled == firstObject.IsAngled)) {
+            if (objects.every((o : any) => o.IsAngled === firstObject.IsAngled)) {
                 this.actualParkingAngled = firstObject.IsAngled;
             }
         }
 
         if (firstObject.IsHandicap != undefined) {
-            if (objects.every((o : any) => o.IsHandicap == firstObject.IsHandicap)) {
+            if (objects.every((o : any) => o.IsHandicap === firstObject.IsHandicap)) {
                 this.actualParkingHandicap = firstObject.IsHandicap;
             }
         }
