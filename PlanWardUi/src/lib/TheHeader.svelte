@@ -13,21 +13,21 @@ let showSettingsMenu = false;
 
 <header class="mx-auto w-full grid grid-cols-12 align-middle">
     <h1 class="col-span-3 text-xl font-medium text-gray-800">PlanWard</h1>
-    <div class="col-span-6 relative mx-auto grid grid-cols-2 rounded-full bg-white">
+    <div class="col-span-6 w-full relative mx-auto grid grid-cols-2 rounded-full bg-white">
         <button
-            class="px-6 py-1 text-center text-sm z-20"
+            class="flex w-full py-1 text-center text-sm z-20"
             class:text-white="{$ApplicationState === AppStateEnum.MainInformation}"
             on:click={() => setAppState(AppStateEnum.MainInformation)}
             >
-            Home
+            <span class="mx-auto">Home</span>
         </button>
         <button
-            class="px-8 py-1 text-center text-sm z-20"
+            class="flex w-full py-1 text-center text-sm z-20"
             class:text-white="{$ApplicationState === AppStateEnum.MainAttributeEditor}"
             on:click={() => setAppState(AppStateEnum.MainAttributeEditor)}
 
             >
-            Editor
+            <span class="mx-auto">Editor</span>
         </button>
         <div 
             class="absolute h-full w-1/2 bg-pw-navy rounded-full move-transition"

@@ -1,4 +1,5 @@
 <script lang="ts">
+    import { NumberWithCommas } from '$modules/utilities/StringUtilities';
     import { EmojiHappyIcon } from '@rgossiaux/svelte-heroicons/outline';
 
     export let title: string;
@@ -12,7 +13,7 @@
         --card-text-color:${textColor}
     `;
 
-    $: unitStrings = units.split(' ');
+    $: formattedValue = NumberWithCommas(value);
 </script>
 
 <article class="w-full px-6 py-3 grid grid-cols-12 gap-3 align-middle rounded-lg shadow card-color" 
@@ -25,7 +26,7 @@
     <section class="h-full col-span-10 flex flex-col justify-evenly">
         <h4 class="font-medium">{ title }</h4>
         <div class="flex space-x-2 align-baseline items-baseline">
-            <h1 class="font-title font-bold text-4xl">{ value }</h1>
+            <h1 class="font-title font-bold text-4xl">{ formattedValue }</h1>
             <p class="font-title font-light text-gray-700">{units}</p>
         </div>
     </section>
