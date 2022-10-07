@@ -36,18 +36,32 @@
   })
 </script>
 
-<main class="relative mx-auto max-w-98 w-screen h-screen p-5 flex flex-col gap-y-4 overflow-hidden object-contain">
-  <div class="absolute w-full px-10 top-3 left-1/2 -translate-x-1/2 z-50">
-    <TheAlert />
-  </div>
-  <TheHeader />
-  <div class="w-full h-full">
-    <svelte:component this={appStateComponent}/>
+<main class="app-main m-auto p-5 flex flex-col gap-y-4 overflow-hidden object-contain">
+  <div class="app-container h-full w-full m-auto relative flex flex-col gap-y-4 overflow-hidden object-contain">
+    <div class="absolute w-full px-10 top-3 left-1/2 -translate-x-1/2 z-50">
+      <TheAlert />
+    </div>
+    <TheHeader />
+    <div class="w-full h-full">
+      <svelte:component this={appStateComponent}/>
+    </div>
   </div>
 </main>
 
 <style>
-  .max-w-98 {
-    max-width: 98%;
+  .app-main {
+    background-color: white;
+    max-width: 650px;
+    width: 100vw;
+    height: 100vh;
+  }
+  .app-container {
+    max-width: 525px;
+  }
+
+  @media (min-width: 650px) {
+    .app-main {
+      border: var(--gray) solid 1px;
+    }
   }
 </style>

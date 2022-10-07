@@ -1,6 +1,7 @@
 <script lang="ts">
     import { NumberWithCommas } from '$modules/utilities/StringUtilities';
     import { EmojiHappyIcon } from '@rgossiaux/svelte-heroicons/outline';
+    import { createEventDispatcher, onDestroy } from 'svelte';
 
     export let title: string;
     export let data: any[];
@@ -31,10 +32,16 @@
     }
     $: value = setValue(data);
     $: formattedValue = NumberWithCommas(Math.round(value));
+
+    const eventDispatcher = createEventDispatcher();
+    function handleClick() {
+        eventDispatcher("click", title);
+    }
 </script>
 
 <article class="w-full px-6 py-3 grid grid-cols-12 gap-3 align-middle rounded-lg shadow card-color" 
-    style="{cssVarStyles}">
+    style="{cssVarStyles}"
+    on:click="{handleClick}">
     <section class="flex col-span-2">
         <slot name="icon">
             <EmojiHappyIcon class="mx-auto" />

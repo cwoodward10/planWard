@@ -2,6 +2,10 @@
 @tailwind components;
 @tailwind utilities;
 
+#app {
+  background-color: white;
+}
+
 @layer base {
   html {
     font-family: Proxima Nova, system-ui, sans-serif;

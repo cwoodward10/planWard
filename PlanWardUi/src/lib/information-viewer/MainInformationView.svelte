@@ -10,6 +10,7 @@
 	import type { IBuilding } from './../../modules/data-models/IBuilding';
   import type { IPlanWardObject } from '$modules/data-models/IPlanWardObject';
   import type { ComponentType } from 'svelte';
+  import DetailInformationCard from './helpers/DetailInformationCard.svelte';
 
   const DESIGNOPTION_ALL_FILTER = 'All';
   let currentDesignOptionFilter = { id:0, value: DESIGNOPTION_ALL_FILTER};
@@ -61,6 +62,16 @@
       icon: ParkingIcon
     }
   ]
+
+  let currentDataView: dataStructure | null = null;
+  function handleInfoCardClick(e: any) {
+    const cardName = e.detail;
+    currentDataView = dataControllers.find(dc => dc.name == cardName);
+    console.log(currentDataView)
+  }
+  function handleInfoCardClose() {
+    currentDataView = null;
+  }
 </script>
 
 <article class="h-full w-full mx-auto flex flex-col space-y-6">
@@ -71,6 +82,15 @@
       selected={currentDesignOptionFilter} 
       on:selectionChanged="{handleFilterChanged}" />
   </section>
+  {#if currentDataView}
+  <section class="relative w-full h-full">
+    <DetailInformationCard 
+      title={currentDataView.name} 
+      data={currentDataView.data} 
+      color={currentDataView.color}
+      on:close={handleInfoCardClose}/>
+  </section>
+  {:else}
   <!-- Information Card Section -->
   <section class="relative w-full h-full flex flex-col space-y-6">
     {#each dataControllers as dataController}
@@ -80,11 +100,13 @@
       dataProperty={dataController.dataProperty}
       units={dataController.units} 
       color={dataController.color} 
-      textColor={dataController.textColor}>
+      textColor={dataController.textColor}
+      on:click={handleInfoCardClick}>
       <div slot="icon" class="w-full h-full flex mx-auto justify-center">
         <svelte:component this={dataController.icon} strokeColor={dataController.color} fillColor={dataController.color} />
       </div>
     </OverallInformationCard>
     {/each}
   </section>
+  {/if}
 </article>
