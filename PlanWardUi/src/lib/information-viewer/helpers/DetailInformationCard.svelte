@@ -1,7 +1,7 @@
 <script lang="ts">
     import { createEventDispatcher} from 'svelte';
 
-    import { ArrowLeftIcon } from "@rgossiaux/svelte-heroicons/outline"
+    import { XIcon } from "@rgossiaux/svelte-heroicons/outline"
 
     export let title: string;
     export let data: any[];
@@ -15,10 +15,10 @@
     }
 </script>
 
-<article class="card-container h-full w-full flex flex-col rounded-lg p-5" style="{cssStyleVar}">
+<article class="card-container bg-white h-full w-full flex flex-col rounded-lg p-5" style="{cssStyleVar}">
     <section class="flex flex-row justify-between">
         <h1 class="title font-title font-medium text-lg">{title}</h1>
-        <ArrowLeftIcon class="text-pw-red h-5 w-5" on:click={handleCloseEvent}/>
+        <XIcon class="text-pw-red h-5 w-5" on:click={handleCloseEvent}/>
     </section>
 </article>
 

@@ -20,6 +20,10 @@ module.exports = {
       orange: colors.amber,
       green: colors.green,
     },
+    screens: {
+      'base': '390px',
+      'lg': '650px',
+    },
     extend: {
       colors: {
         "pw-green": "var(--pw-green)",

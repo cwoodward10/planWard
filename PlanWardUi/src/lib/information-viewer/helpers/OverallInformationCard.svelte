@@ -39,19 +39,19 @@
     }
 </script>
 
-<article class="w-full px-6 py-3 grid grid-cols-12 gap-3 align-middle rounded-lg shadow card-color" 
+<article class="bg-white w-full h-24 px-6 py-3 flex gap-3 align-middle rounded-lg shadow card-color" 
     style="{cssVarStyles}"
     on:click="{handleClick}">
-    <section class="flex col-span-2">
+    <section class="flex w-16 flex-shrink-0">
         <slot name="icon">
             <EmojiHappyIcon class="mx-auto" />
         </slot>
     </section>
-    <section class="h-full col-span-10 flex flex-col justify-evenly">
-        <h4 class="font-medium">{ title }</h4>
+    <section class="h-full w-full flex flex-col justify-evenly">
+        <h4 class="font-medium text-xs base:text-base">{ title }</h4>
         <div class="flex space-x-2 align-baseline items-baseline">
-            <h1 class="font-title font-bold text-4xl">{ formattedValue }</h1>
-            <p class="font-title font-light text-gray-700">{units}</p>
+            <h1 class="font-title font-bold text-2xl base:text-4xl">{ formattedValue }</h1>
+            <p class="font-title font-light text-gray-700 whitespace-nowrap text-xs base:text-base">{units}</p>
         </div>
     </section>
 </article>
