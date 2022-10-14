@@ -1,5 +1,5 @@
 <script lang="ts">
-  import ListBox from '$lib/component-library/ListBox.svelte';
+	import ListBox from '$lib/component-library/ListBox.svelte';
   import OverallInformationCard from './helpers/OverallInformationCard.svelte';
   import DetailInformationCard from './helpers/DetailInformationCard.svelte';
   import BuildingIcon from '$lib/icons/BuildingIcon.svelte';
@@ -9,14 +9,15 @@
 	import { AllDesignOptions } from '$modules/store/MainStore';
   import type { IPlanWardObject } from '$modules/data-models/IPlanWardObject';
 
-  import type { ComponentType } from 'svelte';
-  import { expoInOut } from 'svelte/easing';
-  import { fade } from 'svelte/transition';
+  import { drawer } from '$modules/application/CustomTransitions';
+
+  import { ComponentType, onMount } from 'svelte';
 
   const DESIGNOPTION_ALL_FILTER = 'All';
   let currentDesignOptionFilter = { id:0, value: DESIGNOPTION_ALL_FILTER};
   $: designOptionFilters = [DESIGNOPTION_ALL_FILTER]
     .concat($AllDesignOptions)
+    .sort((a: string, b: string) => a.localeCompare(b))
     .map((optionName: string, index: number) => { return {id: index, value: optionName}} );
 
   function handleFilterChanged(event: any) {
@@ -33,7 +34,7 @@
     return currentDesignOptionFilter.id === 0 || currentDesignOptionFilter.value === p.DesignOption;
   })
 
-  type  dataStructure = {
+  type  dataViewController = {
     name: string,
     data: IPlanWardObject[],
     dataProperty: string | null,
@@ -42,8 +43,8 @@
     textColor: string,
     icon: ComponentType,
   }
-  let dataControllers: dataStructure[]
-  $: dataControllers = [
+  let dataViewControllers: dataViewController[]
+  $: dataViewControllers = [
     {
       name: "Building Footprints",
       data: filteredBuildings,
@@ -65,95 +66,59 @@
   ]
   
   let showDetailView: boolean = false;
-  let currentDataView: dataStructure | null = null;
+  let currentDataViewIndex: number | null = null;
   function handleInfoCardClick(e: any) {
     const cardName = e.detail;
-    currentDataView = dataControllers.find(dc => dc.name == cardName);
+    currentDataViewIndex = dataViewControllers.findIndex(dc => dc.name == cardName);
     showDetailView = true;
   }
   function handleInfoCardClose() {
     showDetailView = false;
   }
 
-  const TRANSITION_DURATION = 1000;
-  function getInfoCardTransitionCss(t: number, u: number, topStart: number): string {
-    return `transform: translateY(-${50 * u}%)`;
-  }
-  function getInfoCardTransitionTick(t: number, u: number, topStart: number, node: HTMLElement) {
-    node.style.top = `calc(${50 * u}% + ${topStart * t}px)`;
-  }
-  let overallTopStart = 0;
-  function infoCardTransition(node: HTMLElement, params: {
-    cardTitle: string,
-    topStart: number,
-    inOut: "in" | "out",
-  }) {
-    if (!currentDataView || currentDataView.name !== params.cardTitle) {
-      return params.inOut === "out" ? 
-        fade(node, {duration: TRANSITION_DURATION}) : 
-        fade(node, {duration: TRANSITION_DURATION, delay: 1000});
-    } else {
-      overallTopStart = params.topStart;
-      return {
-        delay: params.inOut === "in" ? TRANSITION_DURATION : 0,
-        duration: TRANSITION_DURATION,
-        easing: expoInOut,
-        css: (t: number, u: number) => getInfoCardTransitionCss(t, u, params.topStart),
-        tick: (t: number, u: number) => getInfoCardTransitionTick(t, u, params.topStart, node),
-      }
-    }
-  }
-  function getDetailCardTransitionCss(t: number, u: number, topEnd: number, inOut: "in" | "out"): string {
-    const height = 100 * t;
-    const heightString = `min-height: 96px; height: ${height}%;`;
+  let currentDataView: dataViewController | null;
+  $: currentDataView = currentDataViewIndex == null ? null : dataViewControllers[currentDataViewIndex];
 
-    const oNone = 'opacity: 0;';
-    const oFull = 'opacity: 100%;';
-    let opacityString = inOut === "in" ? oNone : oFull;
-    if (t > 0.00001) {
-      opacityString = oFull;
-    }
-
-    return heightString + opacityString;
-  }
-  function detailCardTransition(node: HTMLElement, params: {inOut: "in" | "out"}) {
-    return {
-      delay: params.inOut === "out" ? 0 : TRANSITION_DURATION,
-      duration: TRANSITION_DURATION,
-      easing: expoInOut,
-      css: (t: number, u: number) => getDetailCardTransitionCss(t, u, overallTopStart, params.inOut)
-    }
-  }
+  let animationDuration = 0;
+  let animationDelay = 0;
+  onMount(() => {
+    // use set timeout so that mounts with 0 delay to animation
+    // but then has delay set for when clicks are registered later
+    setTimeout(() => {
+      animationDuration = 400;
+      animationDelay = animationDuration * 1.5;
+    }, 10);
+  })
 </script>
 
 <article class="relative h-full w-full mx-auto flex flex-col space-y-6">
   <!-- Design Option Dropdown -->
-  <section class="w-full relative">
+  <section class="w-full relative z-20">
     <ListBox 
       options={designOptionFilters} 
       selected={currentDesignOptionFilter} 
       on:selectionChanged="{handleFilterChanged}" />
   </section>
   <!-- Information Card Section -->
-  <section class="relative w-full h-full flex flex-col">
+  <section class="relative w-full h-full flex">
     {#if showDetailView}
     <div 
-      class="absolute w-full h-full max-h-full overflow-hidden top-1/2 left-0 -translate-y-1/2 z-10" 
-      in:detailCardTransition="{{inOut: "in"}}" 
-      out:detailCardTransition="{{inOut: "out"}}">
+      class="absolute top-0 left-0 w-full h-full overflow-hidden z-10"
+      in:drawer={{duration: animationDuration, delay: animationDelay, orientation: "Vertical"}}
+      out:drawer={{duration: animationDuration, delay: 0, orientation: "Vertical"}}>
       <DetailInformationCard 
         title={currentDataView.name} 
         data={currentDataView.data} 
+        dataProperty={currentDataView.dataProperty}
         color={currentDataView.color}
         on:close={handleInfoCardClose}/>
     </div>
     {:else}
-    {#each dataControllers as dataController, i}
     <div 
-      class="absolute flex w-full" 
-      style={`top: ${i * 116}px; left: 0;`}
-      in:infoCardTransition="{{cardTitle: dataController.name, topStart: i * 116, inOut: "in"}}"
-      out:infoCardTransition="{{cardTitle: dataController.name, topStart: i * 116, inOut: "out"}}">
+      class="absolute top-0 left-0 w-full h-full overflow-hidden flex flex-col space-y-6" 
+      in:drawer={{duration: animationDuration, delay: animationDelay, orientation: "Vertical"}}
+      out:drawer={{duration: animationDuration, delay: 0, orientation: "Vertical"}}>
+      {#each dataViewControllers as dataController, i}
       <OverallInformationCard 
         title={dataController.name} 
         data={dataController.data} 
@@ -166,8 +131,8 @@
           <svelte:component this={dataController.icon} strokeColor={dataController.color} fillColor={dataController.color} />
         </div>
       </OverallInformationCard>
+      {/each}
     </div>
-    {/each}
     {/if}
   </section>
 </article>

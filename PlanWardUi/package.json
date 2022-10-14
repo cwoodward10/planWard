@@ -24,7 +24,7 @@
     "typescript": "^4.5.4"
   },
   "dependencies": {
-    "chart.js": "^3.7.1",
+    "chart.js": "^3.9.1",
     "svelte-forms-lib": "^2.0.1",
     "vite": "^3.0.9",
     "yup": "^0.32.11"

@@ -542,7 +542,7 @@ export const DevConstants = [
       "IsCompact": null,
       "IsAngled": null,
       "RhinoId": "5d0aeccc-c97b-40dc-a251-7dbc6f258a1a",
-      "DesignOption": "Set Value",
+      "DesignOption": "Option 2",
       "PlanWardType": 2
     },
     {
@@ -552,7 +552,7 @@ export const DevConstants = [
       "IsCompact": null,
       "IsAngled": null,
       "RhinoId": "4465c251-0148-4252-8d9f-ac99f4be9652",
-      "DesignOption": "Set Value",
+      "DesignOption": "Option 2",
       "PlanWardType": 2
     },
     {
@@ -562,7 +562,7 @@ export const DevConstants = [
       "IsCompact": null,
       "IsAngled": null,
       "RhinoId": "52388876-b127-4166-8012-dadea5fb63ef",
-      "DesignOption": "Set Value",
+      "DesignOption": "Option 2",
       "PlanWardType": 2
     },
     {
@@ -572,7 +572,7 @@ export const DevConstants = [
       "IsCompact": null,
       "IsAngled": null,
       "RhinoId": "c4dd0f67-7bdb-41f6-b363-dcfbfcfbc81b",
-      "DesignOption": "Set Value",
+      "DesignOption": "Option 2",
       "PlanWardType": 2
     },
     {
@@ -582,7 +582,7 @@ export const DevConstants = [
       "IsCompact": null,
       "IsAngled": null,
       "RhinoId": "48669885-307b-4db2-88ca-2a3dd766b7b7",
-      "DesignOption": "Set Value",
+      "DesignOption": "Option 2",
       "PlanWardType": 2
     },
     {
@@ -592,7 +592,7 @@ export const DevConstants = [
       "IsCompact": null,
       "IsAngled": null,
       "RhinoId": "37477cb7-b4a9-4e1a-a7a8-1008a37566ab",
-      "DesignOption": "Set Value",
+      "DesignOption": "Option 2",
       "PlanWardType": 2
     },
     {
@@ -602,7 +602,7 @@ export const DevConstants = [
       "IsCompact": null,
       "IsAngled": null,
       "RhinoId": "52be7a38-92eb-476b-8aa1-3588af79c994",
-      "DesignOption": "Set Value",
+      "DesignOption": "Option 2",
       "PlanWardType": 2
     },
     {
@@ -612,7 +612,7 @@ export const DevConstants = [
       "IsCompact": null,
       "IsAngled": null,
       "RhinoId": "eaff842d-b250-4a89-ac9d-b71e780efc25",
-      "DesignOption": "Set Value",
+      "DesignOption": "Option 2",
       "PlanWardType": 2
     },
     {
@@ -622,7 +622,7 @@ export const DevConstants = [
       "IsCompact": null,
       "IsAngled": null,
       "RhinoId": "160cb13b-a60f-4191-b23a-0508bf72d1c6",
-      "DesignOption": "Set Value",
+      "DesignOption": "Option 2",
       "PlanWardType": 2
     },
     {

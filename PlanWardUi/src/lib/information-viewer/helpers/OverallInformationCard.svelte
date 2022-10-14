@@ -1,7 +1,9 @@
 <script lang="ts">
     import { NumberWithCommas } from '$modules/utilities/StringUtilities';
     import { EmojiHappyIcon } from '@rgossiaux/svelte-heroicons/outline';
+
     import { createEventDispatcher, onDestroy } from 'svelte';
+    import { tweened } from 'svelte/motion';
 
     export let title: string;
     export let data: any[];
@@ -30,8 +32,11 @@
             return useDataProperty ? inputData.reduce((total: number, next) => total + next[dataProperty], 0) : data.length;
         }
     }
-    $: value = setValue(data);
-    $: formattedValue = NumberWithCommas(Math.round(value));
+    $: {
+        value.set(setValue(data));
+    };
+    const value = tweened(0);
+    $: formattedValue = NumberWithCommas(Math.round($value));
 
     const eventDispatcher = createEventDispatcher();
     function handleClick() {
@@ -39,16 +44,16 @@
     }
 </script>
 
-<article class="bg-white w-full h-24 px-6 py-3 flex gap-3 align-middle rounded-lg shadow card-color" 
+<article class="bg-white w-full h-24 px-6 py-3 flex gap-3 align-middle rounded-lg shadow card-color cursor-pointer" 
     style="{cssVarStyles}"
     on:click="{handleClick}">
-    <section class="flex w-16 flex-shrink-0">
+    <section class="flex w-16 flex-shrink-0 cursor-pointer">
         <slot name="icon">
             <EmojiHappyIcon class="mx-auto" />
         </slot>
     </section>
     <section class="h-full w-full flex flex-col justify-evenly">
-        <h4 class="font-medium text-xs base:text-base">{ title }</h4>
+        <h4 class="font-medium text-xs base:text-base cursor-pointer">{ title }</h4>
         <div class="flex space-x-2 align-baseline items-baseline">
             <h1 class="font-title font-bold text-2xl base:text-4xl">{ formattedValue }</h1>
             <p class="font-title font-light text-gray-700 whitespace-nowrap text-xs base:text-base">{units}</p>
