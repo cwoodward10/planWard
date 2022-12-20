@@ -17,25 +17,32 @@
         --card-text-color:${textColor}
     `;
 
-    function setValue(inputData: any[]) {
+    /**
+     * takes the input data and formats it per the input dataProperty
+     * @param inputData
+     */
+    function setValue(inputData: any[], inputDataProperty: string | null) {
         if (!inputData) {
             return 0;
         }
 
-        const useDataProperty = dataProperty !== null && 
-            data.every(d => Object.hasOwn(d, dataProperty)) && 
-            data.every(d => d[dataProperty])
+        const useDataProperty = inputDataProperty !== null && 
+            data.every(d => inputDataProperty in d) && 
+            data.every(d => d[inputDataProperty])
 
         if (!inputData) {
             return 0;
         } else {
-            return useDataProperty ? inputData.reduce((total: number, next) => total + next[dataProperty], 0) : data.length;
+            return useDataProperty ? inputData.reduce((total: number, next) => total + next[inputDataProperty], 0) : data.length;
         }
     }
-    $: {
-        value.set(setValue(data));
-    };
+
+    // created as a store so that tweened can be used
     const value = tweened(0);
+    $: {
+        // reactively set the value as data changes
+        value.set(setValue(data, dataProperty));
+    };
     $: formattedValue = NumberWithCommas(Math.round($value));
 
     const eventDispatcher = createEventDispatcher();

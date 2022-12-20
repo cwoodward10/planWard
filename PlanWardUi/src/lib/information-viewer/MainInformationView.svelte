@@ -5,38 +5,37 @@
   import BuildingIcon from '$lib/icons/BuildingIcon.svelte';
   import ParkingIcon from '$lib/icons/ParkingIcon.svelte';
 
-	import { PlanWardBuildings, PlanWardParking } from '$modules/store/MainStore';
-	import { AllDesignOptions } from '$modules/store/MainStore';
-  import type { IPlanWardObject } from '$modules/data-models/IPlanWardObject';
-
+	import { PlanWardBuildings, PlanWardParking, AllDesignOptions } from '$modules/store/MainStore';
+  import { CurrentDesignOptionFilter, FilterOption, DESIGNOPTION_ALL_FILTER } from '$modules/store/FilterHandler';
+  
   import { drawer } from '$modules/application/CustomTransitions';
+  import type { IAccountingObject } from '$modules/data-models/IAccountingObject';
 
   import { ComponentType, onMount } from 'svelte';
 
-  const DESIGNOPTION_ALL_FILTER = 'All';
-  let currentDesignOptionFilter = { id:0, value: DESIGNOPTION_ALL_FILTER};
+  let designOptionFilters: FilterOption[];
   $: designOptionFilters = [DESIGNOPTION_ALL_FILTER]
-    .concat($AllDesignOptions)
-    .sort((a: string, b: string) => a.localeCompare(b))
-    .map((optionName: string, index: number) => { return {id: index, value: optionName}} );
+      .concat($AllDesignOptions)
+      .sort((a: string, b: string) => a.localeCompare(b))
+      .map((optionName: string, index: number) => { return {id: index, value: optionName}});
 
   function handleFilterChanged(event: any) {
     const newFilter = designOptionFilters.find(dof => dof.id === event.detail);
     if (newFilter) {
-      currentDesignOptionFilter = newFilter;
+      CurrentDesignOptionFilter.set(newFilter);
     }
   }
 
   $: filteredBuildings = $PlanWardBuildings.filter(b => {
-    return currentDesignOptionFilter.id === 0 || currentDesignOptionFilter.value === b.DesignOption;
+    return $CurrentDesignOptionFilter.id === 0 || $CurrentDesignOptionFilter.value === b.DesignOption;
   })
   $: filteredParking = $PlanWardParking.filter(p => {
-    return currentDesignOptionFilter.id === 0 || currentDesignOptionFilter.value === p.DesignOption;
+    return $CurrentDesignOptionFilter.id === 0 || $CurrentDesignOptionFilter.value === p.DesignOption;
   })
 
   type  dataViewController = {
     name: string,
-    data: IPlanWardObject[],
+    data: IAccountingObject[],
     dataProperty: string | null,
     units: string,
     color: string,
@@ -85,18 +84,18 @@
     // use set timeout so that mounts with 0 delay to animation
     // but then has delay set for when clicks are registered later
     setTimeout(() => {
-      animationDuration = 400;
+      animationDuration = 300;
       animationDelay = animationDuration * 1.5;
     }, 10);
   })
 </script>
 
-<article class="relative h-full w-full mx-auto flex flex-col space-y-6">
+<article class="relative h-full w-full mx-auto flex flex-col space-y-6 overflow-hidden">
   <!-- Design Option Dropdown -->
   <section class="w-full relative z-20">
     <ListBox 
       options={designOptionFilters} 
-      selected={currentDesignOptionFilter} 
+      selected={$CurrentDesignOptionFilter} 
       on:selectionChanged="{handleFilterChanged}" />
   </section>
   <!-- Information Card Section -->

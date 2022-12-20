@@ -20,7 +20,7 @@
     const pwWindow = (window as unknown as PlanWardWindow);
     pwWindow.EventBus = new EventBus();
     
-    if (Object.hasOwn(pwWindow, "Interop")) {
+    if (pwWindow && "Interop" in pwWindow) {
       pwWindow.Interop.refreshInformation();
     } else {
       AllPlanWardObjects.set(DevConstants);
